@@ -1,13 +1,9 @@
 import React from 'react';
 import { compose, pure } from 'recompose'
+import Page from 'components/Page'
 
 const IndexPage = () => (
-  <div className="App">
-    <header className="App-header">
-      <h1 className="App-title">Welcome to ElixirChain</h1>
-    </header>
-    <p className="App-intro"></p>
-  </div>
+  <Page title="Home page"></Page>
 )
 
 export default compose(
