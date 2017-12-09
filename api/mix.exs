@@ -43,7 +43,8 @@ defmodule ElixirBench.Mixfile do
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_ecto, "~> 0.1.3"},
       {:dataloader, "~> 1.0"},
-      {:corsica, "~> 1.0"}
+      {:corsica, "~> 1.0"},
+      {:distillery, "~> 1.5"},
     ]
   end
 
