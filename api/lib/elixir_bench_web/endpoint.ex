@@ -38,6 +38,8 @@ defmodule ElixirBenchWeb.Endpoint do
     key: "_elixir_bench_key",
     signing_salt: "nHRnIt4M"
 
+  plug Corsica, max_age: 600, origins: "*"
+
   plug ElixirBenchWeb.Router
 
   @doc """
