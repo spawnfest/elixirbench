@@ -8,6 +8,8 @@
     scope: 2,
     pipe_through: 1,
     forward: 3,
-    socket: 2
+    socket: 2,
+    object: 2,
+    field: 2
   ]
 ]
