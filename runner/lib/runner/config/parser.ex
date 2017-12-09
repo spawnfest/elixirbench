@@ -1,45 +1,7 @@
-defmodule ElixirBench.Runner.ConfigParser do
+defmodule ElixirBench.Runner.Config.Parser do
   @moduledoc """
   This module is responsible for processing
   """
-
-  @github_base_url "https://raw.githubusercontent.com/"
-
-  @doc """
-  Fetch config from a GitHub repo by it's slug.
-
-  Right now It's only possible to fetch config from a public repo.
-  """
-  def fetch_config_by_repo_slug(repo_slug, branch \\ "") do
-    repo_slug = String.trim(repo_slug, "/")
-    branch = String.trim(branch, "/")
-    url =
-      if branch == "" do
-        [@github_base_url, repo_slug, "/bench/config.yml"]
-      else
-        [@github_base_url, repo_slug, "/", branch, "/bench/config.yml"]
-      end
-
-    with {:ok, content} <- fetch_file_contents(url) do
-      parse_yaml(content)
-    end
-  end
-
-  defp fetch_file_contents(url) do
-    headers = [{"accept", "application/json"}, {"content-type", "application/json"}]
-    case :hackney.request(:get, url, headers, "", [:with_body]) do
-      {:ok, status, _headers, ""} when status in 200..299 ->
-        {:error, :no_content}
-      {:ok, 404, _headers, _body} ->
-        {:error, :config_not_found}
-      {:ok, status, _headers, body} when status in 200..299 ->
-        {:ok, body}
-      {:ok, status, _headers, body} when status in 400..499 ->
-        {:error, {status, body}}
-      {_ok_or_error, status, _headers, _body} when status in 500..599 ->
-        {:error, :server_down}
-    end
-  end
 
   def parse_yaml(content) do
     content
