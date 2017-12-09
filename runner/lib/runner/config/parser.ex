@@ -14,12 +14,12 @@ defmodule ElixirBench.Runner.Config.Parser do
          {:ok, erlang_version} <- fetch_erlang_version(raw_config),
          {:ok, environment_variables} <- fetch_environment_variables(raw_config),
          {:ok, deps} <- fetch_deps(raw_config) do
-    %ElixirBench.Runner.Config{
+    {:ok, %ElixirBench.Runner.Config{
       elixir_version: elixir_version,
       erlang_version: erlang_version,
       environment_variables: environment_variables,
       deps: deps
-    }
+    }}
     end
   end
 
@@ -66,7 +66,7 @@ defmodule ElixirBench.Runner.Config.Parser do
   defp fetch_environment_variables(%{"environment" => environment_variables}) when is_map(environment_variables) do
     errors = Enum.reject(environment_variables, fn {key, value} -> is_binary(key) and is_binary(value) end)
     if errors == [] do
-      {:ok, environment_variables}
+      {:ok, stringify_values(environment_variables)}
     else
       {:error, {:invalid_environment_variables, errors}}
     end
@@ -81,7 +81,8 @@ defmodule ElixirBench.Runner.Config.Parser do
   defp fetch_deps(%{"deps" => %{"docker" => docker_deps}}) when is_list(docker_deps) do
     errors = Enum.reject(docker_deps, fn dep -> Map.has_key?(dep, "image") end)
     if errors == [] do
-      {:ok, Enum.map(docker_deps, &Map.fetch!(&1, "image"))}
+      deps = Enum.map(docker_deps, &stringify_environment(&1))
+      {:ok, deps}
     else
       {:error, {:invalid_deps, errors}}
     end
@@ -91,5 +92,14 @@ defmodule ElixirBench.Runner.Config.Parser do
   end
   defp fetch_deps(_raw_config) do
     {:ok, []}
+  end
+
+  defp stringify_environment(%{"environment" => environment} = raw_config),
+    do: Map.put(raw_config, "environment", stringify_values(environment))
+  defp stringify_environment(raw_config),
+    do: raw_config
+
+  defp stringify_values(map) do
+    for {key, value} <- map, do: {key, to_string(value)}, into: %{}
   end
 end

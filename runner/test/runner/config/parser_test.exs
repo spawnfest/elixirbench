@@ -16,15 +16,15 @@ defmodule ElixirBench.Runner.Config.ParserTest do
           - image: mysql:latest
       """
 
-      assert parse_yaml(config) == %ElixirBench.Runner.Config{
-        deps: ["postgres:alpine-latest", "mysql:latest"],
+      assert parse_yaml(config) == {:ok, %ElixirBench.Runner.Config{
+        deps: [%{"image" => "postgres:alpine-latest"}, %{"image" => "mysql:latest"}],
         elixir_version: "1.5.2",
         environment_variables: %{
           "MYSQL_URL" => "root@localhost",
           "PG_URL" => "postgres:postgres@localhost"
         },
         erlang_version: "20.1.2"
-      }
+      }}
     end
 
     test "assigns default elixir and erlang versions" do
@@ -35,7 +35,7 @@ defmodule ElixirBench.Runner.Config.ParserTest do
           - image: mysql:latest
       """
 
-      assert %{elixir_version: "1.5.2", erlang_version: "20.1.2"} = parse_yaml(config)
+      assert {:ok, %{elixir_version: "1.5.2", erlang_version: "20.1.2"}} = parse_yaml(config)
     end
 
     test "validates elixir version" do
@@ -44,7 +44,7 @@ defmodule ElixirBench.Runner.Config.ParserTest do
       erlang: 20.1.2
       """
 
-      assert %{elixir_version: "1.5.2"} = parse_yaml(config)
+      assert {:ok, %{elixir_version: "1.5.2"}} = parse_yaml(config)
 
       config = """
       elixir: 21.5.2
@@ -60,7 +60,7 @@ defmodule ElixirBench.Runner.Config.ParserTest do
       erlang: 20.1.2
       """
 
-      assert %{erlang_version: "20.1.2"} = parse_yaml(config)
+      assert {:ok, %{erlang_version: "20.1.2"}} = parse_yaml(config)
 
       config = """
       elixir: 1.5.2
