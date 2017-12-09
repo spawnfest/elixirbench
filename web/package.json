@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://spawnfest.github.io/elixirchain/",
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.4",
     "apollo-client": "^2.0.4",
@@ -22,16 +23,19 @@
     "react-scripts": "1.0.17",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
-    "redux-devtools-extension": "^2.13.2",
     "reset.css": "^2.0.2"
   },
   "scripts": {
     "start": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts start",
     "build": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts build",
     "test": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "yarn build && yarn ghpages",
+    "ghpages": "ghpages -p build"
   },
   "devDependencies": {
-    "cross-env": "^5.1.1"
+    "cross-env": "^5.1.1",
+    "ghpages": "^0.0.10",
+    "redux-devtools-extension": "^2.13.2"
   }
 }
