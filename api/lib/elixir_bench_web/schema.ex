@@ -17,8 +17,8 @@ defmodule ElixirBenchWeb.Schema do
 
     field :repo, non_null(:repo) do
       arg :slug, non_null(:string)
-      resolve fn %{slug: slug}, _b ->
-        Repos.get_repo_by_slug(slug)
+      resolve fn %{slug: slug}, _ ->
+        Repos.fetch_repo_by_slug(slug)
       end
     end
   end

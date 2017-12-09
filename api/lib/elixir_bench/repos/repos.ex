@@ -8,7 +8,7 @@ defmodule ElixirBench.Repos do
     Repo.all(Repos.Repo)
   end
 
-  def get_repo_by_slug(slug) do
+  def fetch_repo_by_slug(slug) do
     with [owner, name] <- String.split(slug, "/", parts: 2) do
       query = where(Repos.Repo, [owner: ^owner, name: ^name])
       Repo.fetch(query)
