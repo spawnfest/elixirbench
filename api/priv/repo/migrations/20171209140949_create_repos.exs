@@ -9,5 +9,6 @@ defmodule ElixirBench.Repo.Migrations.CreateRepos do
       timestamps()
     end
 
+    create unique_index(:repos, [:owner, :name])
   end
 end
