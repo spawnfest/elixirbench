@@ -7,7 +7,7 @@ defmodule ElixirBenchWeb.Schema do
   import_types Schema.ContentTypes
 
   query do
-    field :packages, list_of(:package) do
+    field :repos, list_of(:repo) do
       resolve fn _, _, _ -> {:ok, []} end
     end
   end

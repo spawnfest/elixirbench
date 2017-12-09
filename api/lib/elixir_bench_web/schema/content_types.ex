@@ -1,8 +1,11 @@
 defmodule ElixirBenchWeb.Schema.ContentTypes do
   use Absinthe.Schema.Notation
 
-  object :package do
-    field :name, :string
+  object :repo do
+    field :owner, :string
+    field :user, :string
+    field :slug, :string
+
     field :benchmarks, list_of(:benchmark)
   end
 

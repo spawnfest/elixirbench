@@ -10,6 +10,7 @@
     forward: 3,
     socket: 2,
     object: 2,
-    field: 2
+    field: 2,
+    field: 3
   ]
 ]
