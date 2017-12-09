@@ -8,14 +8,14 @@ defmodule ElixirBench.Runner.Config do
 
   Right now It's only possible to fetch config from a public repo.
   """
-  def fetch_config_by_repo_slug(repo_slug, branch \\ "") do
+  def fetch_config_by_repo_slug(repo_slug, branch_or_commit \\ "") do
     repo_slug = String.trim(repo_slug, "/")
-    branch = String.trim(branch, "/")
+    branch_or_commit = String.trim(branch_or_commit, "/")
     url =
-      if branch == "" do
+      if branch_or_commit == "" do
         [@github_base_url, repo_slug, "/bench/config.yml"]
       else
-        [@github_base_url, repo_slug, "/", branch, "/bench/config.yml"]
+        [@github_base_url, repo_slug, "/", branch_or_commit, "/bench/config.yml"]
       end
 
     with {:ok, content} <- fetch_file_contents(url) do
