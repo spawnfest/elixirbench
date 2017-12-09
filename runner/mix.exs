@@ -22,6 +22,9 @@ defmodule ElixirBench.Runner.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:yaml_elixir, "~> 1.3"},
+      {:confex, "~> 3.3"},
+      {:hackney, "~> 1.10"}
     ]
   end
 end
