@@ -5,7 +5,6 @@ defmodule ElixirBench.Benchmarks do
   alias Ecto.Multi
 
   alias ElixirBench.Github
-  alias ElixirBench.Repos
   alias ElixirBench.Benchmarks.{Benchmark, Measurement, Job, Runner, Config}
 
   def data() do
@@ -52,7 +51,11 @@ defmodule ElixirBench.Benchmarks do
     Repo.all(from(b in Benchmark, where: b.repo_id in ^repo_ids))
   end
 
-  def create_job(%Repos.Repo{} = repo, attrs) do
+  def list_jobs_by_repo_id(repo_ids) do
+    Repo.all(from(j in Job, where: j.repo_id in ^repo_ids))
+  end
+
+  def create_job(repo, attrs) do
     changeset = Job.create_changeset(%Job{repo_id: repo.id}, attrs)
     with {:ok, job} <- Ecto.Changeset.apply_action(changeset, :insert),
          {:ok, raw_config} <- Github.fetch_config(repo.owner, repo.name, job.commit_sha) do

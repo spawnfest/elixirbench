@@ -17,6 +17,23 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
         end)
       end
     end
+
+    field :jobs, list_of(:job) do
+      resilve fn %{id: id}, _, _ ->
+        batch({__MODULE__, :list_jobs_by_repo_id}, id, fn batch_results ->
+          {:ok, Map.get(batch_results, id, [])}
+        end)
+      end
+    end
+  end
+
+  object :job do
+    field :id, :id
+    field :branch_name, :string
+    field :commit_sha, :string
+    field :claimed_at, :datetime
+    field :completed_at, :datetime
+    field :log, :string
   end
 
   object :benchmark do
@@ -106,6 +123,12 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
   @doc false
   def list_benchmarks_by_repo_id(_, repo_ids) do
     data = Benchmarks.list_benchmarks_by_repo_id(repo_ids)
+    Enum.group_by(data, &Map.fetch!(&1, :repo_id))
+  end
+
+  @doc false
+  def list_jobs_by_repo_id(_, repo_ids) do
+    data = Benchmarks.list_jobs_by_repo_id(repo_ids)
     Enum.group_by(data, &Map.fetch!(&1, :repo_id))
   end
 end

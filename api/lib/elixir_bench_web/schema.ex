@@ -38,6 +38,27 @@ defmodule ElixirBenchWeb.Schema do
         Benchmarks.fetch_measurement(id)
       end
     end
+
+    field :job, non_null(:job) do
+      arg :id, non_null(:id)
+      resolve fn %{id: id}, _ ->
+        Benchmarks.fetch_job(id)
+      end
+    end
+  end
+
+  mutation do
+    field :schedule_job, type: :job do
+      arg :branch_name, non_null(:string)
+      arg :commit_sha, non_null(:string)
+      arg :repo_slug, non_null(:string)
+
+      resolve fn %{repo_slug: slug} = data, _ ->
+        with {:ok, repo} <- Repos.fetch_repo_by_slug(slug) do
+          Benchmarks.create_job(repo, data)
+        end
+      end
+    end
   end
 
   def context(ctx) do
