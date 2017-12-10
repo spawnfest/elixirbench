@@ -28,7 +28,7 @@ defmodule ElixirBench.Runner.JobTest do
       id: "test_job",
       repo_slug: "elixir-ecto/ecto",
       branch: "mm/benches",
-      commit: "c5647e87f445b05ba67422a46233599569e09176",
+      commit: "2a5a8efbc3afee3c6893f4cba33679e98142df3f",
       config: config
     }
 
