@@ -3,7 +3,7 @@ alias ElixirBench.{Benchmarks, Repos}
 {:ok, runner} = Benchmarks.create_runner(%{name: "test-runner", api_key: "test"})
 {:ok, repo} = Repos.create_repo(%{owner: "elixir-ecto", name: "ecto"})
 
-{:ok, %{id: job_id}} = Benchmarks.create_job(repo.id, %{branch_name: "mm/benches", commit_sha: "207b2a0"})
+{:ok, %{id: job_id}} = Benchmarks.create_job(repo, %{branch_name: "mm/benches", commit_sha: "207b2a0"})
 
 {:ok, %{id: ^job_id} = job} = Benchmarks.claim_job(runner)
 
