@@ -1,13 +1,13 @@
 import React from 'react'
 import { get } from 'lodash'
-import { withRouter, Link } from 'react-router'
+import { withRouter } from 'react-router'
 import { compose, pure, withHandlers, withPropsOnChange } from 'recompose'
 import { withStyles } from 'material-ui/styles'
 import { getRepo } from 'queries'
 import { graphql } from 'react-apollo'
 
 import Typography from 'material-ui/Typography'
-import Card, { CardHeader, CardActions, CardContent, CardMedia }  from 'material-ui/Card'
+import Card, { CardHeader }  from 'material-ui/Card'
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui-icons/MoreVert'
 
