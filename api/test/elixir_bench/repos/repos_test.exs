@@ -1,6 +1,5 @@
 defmodule ElixirBench.ReposTest do
   use ElixirBench.DataCase
-
   alias ElixirBench.Repos
 
   describe "repos" do
@@ -26,7 +25,7 @@ defmodule ElixirBench.ReposTest do
 
     test "get_repo!/1 returns the repo with given id" do
       repo = repo_fixture()
-      assert Repos.get_repo!(repo.id) == repo
+      assert Repos.fetch_repo_by_slug(repo.owner <> "/" <> repo.name) == {:ok, repo}
     end
 
     test "create_repo/1 with valid data creates a repo" do
@@ -50,18 +49,18 @@ defmodule ElixirBench.ReposTest do
     test "update_repo/2 with invalid data returns error changeset" do
       repo = repo_fixture()
       assert {:error, %Ecto.Changeset{}} = Repos.update_repo(repo, @invalid_attrs)
-      assert repo == Repos.get_repo!(repo.id)
+      assert Repos.fetch_repo_by_slug(repo.owner <> "/" <> repo.name) == {:ok, repo}
     end
 
     test "delete_repo/1 deletes the repo" do
       repo = repo_fixture()
       assert {:ok, %Repo{}} = Repos.delete_repo(repo)
-      assert_raise Ecto.NoResultsError, fn -> Repos.get_repo!(repo.id) end
+      assert Repos.fetch_repo_by_slug(repo.owner <> "/" <> repo.name) == {:error, :not_found}
     end
+  end
 
-    test "change_repo/1 returns a repo changeset" do
-      repo = repo_fixture()
-      assert %Ecto.Changeset{} = Repos.change_repo(repo)
-    end
+  test "Repo.changeset/2 returns a repo changeset" do
+    repo = repo_fixture()
+    assert %Ecto.Changeset{} = Repos.Repo.changeset(repo, %{})
   end
 end
