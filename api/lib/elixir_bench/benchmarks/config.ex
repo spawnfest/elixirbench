@@ -7,8 +7,8 @@ defmodule ElixirBench.Benchmarks.Config do
   @primary_key false
 
   embedded_schema do
-    field :elixir, :string, default: "1.5.2"
-    field :erlang, :string, default: "20.1.2"
+    field :elixir, :string, default: Confex.fetch_env!(:elixir_bench, :default_elixir_version)
+    field :erlang, :string, default: Confex.fetch_env!(:elixir_bench, :default_erlang_version)
     field :environment, {:map, :string}, default: %{}
     embeds_one :deps, Dep, primary_key: false do
       embeds_many :docker, Docker, primary_key: {:image, :string, []} do
@@ -19,10 +19,13 @@ defmodule ElixirBench.Benchmarks.Config do
   end
 
   def changeset(%Config{} = config, attrs) do
+    supported_elixir_version = Confex.fetch_env!(:elixir_bench, :supported_elixir_versions)
+    supported_erlang_version = Confex.fetch_env!(:elixir_bench, :supported_erlang_versions)
+
     config
     |> cast(attrs, [:elixir, :erlang, :environment])
-    |> validate_inclusion(:elixir, ["1.5.2"])
-    |> validate_inclusion(:erlang, ["20.1.2"])
+    |> validate_inclusion(:elixir, supported_elixir_version)
+    |> validate_inclusion(:erlang, supported_erlang_version)
     |> cast_embed(:deps, with: &deps_changeset/2)
   end
 
