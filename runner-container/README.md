@@ -8,7 +8,7 @@ To start it requires following environment variables:
 * `ELIXIRBENCH_REPO_BRANCH` - branch name on which we are running our benchmarking suite;
 * `ELIXIRBENCH_REPO_COMMIT` - commit hash for which we are running our benchmarking suite.
 
-Benchmarking results should be written to a path from `BENCHMARKING_RESULTS_PATH` environment variable.
+Benchmarking results should be written to a path from `BENCHMARKS_OUTPUT_PATH` environment variable.
 
 ## Building and running container
 
