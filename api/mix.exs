@@ -45,7 +45,10 @@ defmodule ElixirBench.Mixfile do
       {:dataloader, "~> 1.0"},
       {:corsica, "~> 1.0"},
       {:distillery, "~> 1.5"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:hackney, "~> 1.10"},
+      {:antidote, github: "michalmuskala/antidote"},
+      {:yamerl, "~> 0.6.0"}
     ]
   end
 

@@ -3,7 +3,7 @@ defmodule ElixirBench.Benchmarks.Job do
 
   import Ecto.Changeset
 
-  alias ElixirBench.Benchmarks.{Runner, Job}
+  alias ElixirBench.Benchmarks.{Runner, Job, Config}
 
   schema "jobs" do
     field :repo_id, :id
@@ -24,6 +24,8 @@ defmodule ElixirBench.Benchmarks.Job do
     field :elixir_version, :string
     field :erlang_version, :string
     field :memory_mb, :integer
+
+    embeds_one :config, Config
 
     timestamps()
   end
