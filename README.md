@@ -18,12 +18,14 @@ The project is inspired by similar projects:
 
 The project consists of several components:
 
-* the API server - powers everything and is responsible for scheduling execution of
+* [the API server](api/) - powers everything and is responsible for scheduling execution of
   benchmarks. The server provides a public GraphQL API for exploring the results of the
   benchmarks.
-* the runner server - runs on separate infrastructure and is responsible for consistent
+* [the runner server](runner/) - runs on separate infrastructure and is responsible for consistent
   execution of benchmarks.
-* the front-end - is a website that leverages the GraphQL API and facilitates exploration
+* [the runner container](runner-container/) - scripts to build container which fetches project source
+  and executes benchmarks;
+* [the front-end](web/) - is a website that leverages the GraphQL API and facilitates exploration
   of the results for humans.
 
 ## How to use it
@@ -57,3 +59,13 @@ You can find code sample in [Ecto repo](https://github.com/elixir-ecto/ecto/tree
 ### Running benchmarks
 
 Benchmarking UI is available on the [official website](http://www.elixirbench.org/).
+
+## Future development
+
+- Improve test coverage;
+
+- Investigate security of worker docker containers;
+
+- Create a GitHub marketplace app that would ease integration to the level of most common CI tools;
+
+- Also, it would be awesome to have integration with GitHub PR check's, so that maintainers can keep track how each PR affects library performance. If we would not be able to handle heavy load because of all that jobs - we can white-list most common packages and give it's developers lightweight version or PR checks - to request to run some commit from another fork/branch to compare how it works before merging it;
