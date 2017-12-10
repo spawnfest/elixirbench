@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, pure, withHandlers } from 'recompose'
 import { withStyles } from 'material-ui/styles';
 
-import List, { ListItem, ListItemText } from 'material-ui/List'
+import { ListItem, ListItemText } from 'material-ui/List'
 
 import styles from './styles'
 

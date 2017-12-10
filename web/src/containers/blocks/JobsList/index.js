@@ -1,6 +1,6 @@
 import React from 'react';
 import { get } from 'lodash'
-import { router, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import { compose, pure, withHandlers } from 'recompose'
 import { withStyles } from 'material-ui/styles'
 
