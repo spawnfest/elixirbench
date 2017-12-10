@@ -12,7 +12,11 @@ import BenchmarksList from 'containers/blocks/BenchmarksList'
 import styles from './styles'
 
 const RepoDetails = ({ classes, data, children, onBenchmarkClick }) => (
-  <Page title={ get(data, 'repo.name') }>
+  <Page
+     title={ get(data, 'repo.name') }
+     backLink={`/repos`}
+     backTitle="Back to the list of repos"
+   >
     <Typography type="title">Benchmarks</Typography>
     <BenchmarksList
       benchmarks={ get(data, 'repo.benchmarks') }

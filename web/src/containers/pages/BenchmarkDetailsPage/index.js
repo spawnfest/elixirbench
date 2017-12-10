@@ -16,9 +16,13 @@ import MeasurementsChart from 'containers/blocks/MeasurementsChart'
 
 import styles from './styles'
 
-const BenchmarkDetailsPage = ({ classes, data, children }) => (
-  <Page title="Benchmark details">
-    <Typography type="title">{ get(data, 'benchmark.name') }</Typography>
+const BenchmarkDetailsPage = ({ classes, data, params, children }) => (
+  <Page
+    title="Benchmark details"
+    backLink={`/repos/${params.owner}/${params.repo}`}
+    backTitle="Back to the list of benchmarks"
+  >
+    <Typography type="headline">Measurements for <u>{ get(data, 'benchmark.name') }</u></Typography>
     <PageBlock title="Iteractions per second">
       <MeasurementsChart measurements={ get(data, 'benchmark.measurements') }>
         <Line dataKey="ips" type="monotone" title="IPS" />
