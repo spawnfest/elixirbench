@@ -46,18 +46,7 @@ config :logger, level: :info
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
-# ## Using releases
-#
-# If you are doing OTP releases, you need to instruct Phoenix
-# to start the server for all endpoints:
-#
-#     config :phoenix, :serve_endpoints, true
-#
-# Alternatively, you can configure exactly which server to
-# start per endpoint:
-#
-#     config :elixir_bench, ElixirBenchWeb.Endpoint, server: true
-#
+config :elixir_bench, ElixirBenchWeb.Endpoint, server: true
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
