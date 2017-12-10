@@ -1,3 +1,4 @@
+import 'typeface-roboto'
 import React from 'react'
 import { Provider  } from 'react-redux'
 import { ApolloProvider } from 'react-apollo'

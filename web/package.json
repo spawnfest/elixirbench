@@ -24,7 +24,8 @@
     "recharts": "^1.0.0-beta.6",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
-    "reset.css": "^2.0.2"
+    "reset.css": "^2.0.2",
+    "typeface-roboto": "^0.0.45"
   },
   "scripts": {
     "start": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts start",

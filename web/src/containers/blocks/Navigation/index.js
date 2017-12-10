@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose, pure } from 'recompose'
 import { withStyles } from 'material-ui/styles'
+import { Link } from 'react-router'
+
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
@@ -17,9 +19,11 @@ const Navigation = ({ classes, children }) => (
       <Toolbar>
         <Grid container justify="space-between" wrap="nowrap" alignItems="center">
           <Grid item>
-            <Typography type="title" color="inherit">
-              Elixir<b className={ classes.bolder }>Bench</b>
-            </Typography>
+            <Link to="/" className={ classes.logo }>
+              <Typography type="title" color="inherit">
+                  Elixir<b className={ classes.bolder }>Bench</b>
+              </Typography>
+            </Link>
           </Grid>
           <Grid item>
             <Grid container wrap="nowrap">
