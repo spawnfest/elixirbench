@@ -1,3 +1,5 @@
+<img src="./web/public/images/logo.svg" height="68" />
+
 # ElixirBench
 
 Long Running Benchmarks for Elixir Projects.
