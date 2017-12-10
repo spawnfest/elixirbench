@@ -7,8 +7,8 @@ import { ListItem, ListItemText } from 'material-ui/List'
 import styles from './styles'
 
 const RepoListItem = ({ key, name, slug, onClick }) => (
-  <ListItem key={ key } button onClick={ onClick }>
-    <ListItemText primary={ name } />
+  <ListItem divider key={ key } button onClick={ onClick }>
+    <ListItemText primary={ slug } />
   </ListItem>
 )
 

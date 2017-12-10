@@ -32,14 +32,6 @@ const RepoDetails = ({ classes, data, githubUrl, children, onBenchmarkClick, onR
           </IconButton>
         }
       />
-      {/* <CardContent>
-        <Typography type="headline" component="h2">
-          {  }
-        </Typography>
-        <Typography component="a" href={`https://github.com/${ get(data, 'repo.slug') }`}>
-          { get(data, 'repo.slug') }
-        </Typography>
-      </CardContent> */}
     </Card>
     <PageBlock>
       <Typography type="title">Benchmarks</Typography>
