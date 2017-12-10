@@ -5,6 +5,7 @@ set -e
 [[ -z "${ELIXIRBENCH_REPO_SLUG}" ]] && { echo >&2 "ELIXIRBENCH_REPO_SLUG is not set. Aborting."; exit 1; }
 [[ -z "${ELIXIRBENCH_REPO_BRANCH}" ]] && { echo >&2 "ELIXIRBENCH_REPO_BRANCH is not set. Aborting."; exit 1; }
 [[ -z "${ELIXIRBENCH_REPO_COMMIT}" ]] && { echo >&2 "ELIXIRBENCH_REPO_COMMIT is not set. Aborting."; exit 1; }
+[[ -z "${BENCHMARKS_OUTPUT_PATH}" ]] && { echo >&2 "BENCHMARKS_OUTPUT_PATH is not set. Aborting."; exit 1; }
 
 # Set default MIX_ENV variable if it's not overridden
 [[ -z "${MIX_ENV}" ]] && export MIX_ENV="bench"
