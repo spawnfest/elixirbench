@@ -15,4 +15,5 @@ config :elixir_bench, ElixirBench.Repo,
   username: "postgres",
   password: "postgres",
   database: "elixir_bench_test",
-  hostname: "localhost"
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
