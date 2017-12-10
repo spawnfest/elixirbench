@@ -2,17 +2,8 @@
 
 This is an Elixir daemon that pulls for job our API and executes tests in `runner-container`.
 
-## Sample YAML file
+## Dependencies
 
-```
-# bench/config.yml
-elixir: 1.5.2
-erlang: 20.1.2
-environment:
-  PG_URL: postgres:postgres@localhost
-  MYSQL_URL: root@localhost
-deps:
-  docker:
-    - image: postgres:alpine-latest
-    - image: mysql:latest
-```
+Benchmarks are running inside a docker container, so you need to have
+[`docker`](https://docs.docker.com/engine/installation/) and
+[`docker-compose`](https://docs.docker.com/compose/install/) installed.
