@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import { withRouter } from 'react-router'
 import { compose, pure, withHandlers, withPropsOnChange } from 'recompose'
 import { withStyles } from 'material-ui/styles'
-import { getRepo } from 'queries'
+import { getRepo } from 'graphql/queries'
 import { graphql } from 'react-apollo'
 
 import Typography from 'material-ui/Typography'

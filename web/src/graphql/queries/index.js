@@ -78,3 +78,16 @@ export const getBenchmark = gql`
     }
   }
 `
+
+export const getJob = gql`
+  query GetJobById ($id: String) {
+    job(id: $id) {
+      branchName
+      claimedAt
+      commitSha
+      completedAt
+      id
+      log
+    }
+  }
+`

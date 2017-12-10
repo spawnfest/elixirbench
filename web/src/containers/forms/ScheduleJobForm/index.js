@@ -8,10 +8,11 @@ import Button from 'components/Button'
 import FormField from 'components/FormField'
 import Grid from 'components/Grid'
 import ElixirBenchLogo from 'components/ElixirBenchLogo'
+import Typography from 'material-ui/Typography'
 
 import styles from './styles'
 
-const ScheduleJobForm = ({ classes, handleSubmit }) => (
+const ScheduleJobForm = ({ classes, error, handleSubmit }) => (
   <form onSubmit={ handleSubmit } className={ classes.root } noValidate autoComplete="off">
     <Grid container>
       <Grid item>
@@ -23,7 +24,7 @@ const ScheduleJobForm = ({ classes, handleSubmit }) => (
       </Grid>
       <Grid item>
         <Field
-          name="branch"
+          name="branchName"
           label="Branch"
           margin="normal"
           component={ FormField }
@@ -31,7 +32,7 @@ const ScheduleJobForm = ({ classes, handleSubmit }) => (
       </Grid>
       <Grid item>
         <Field
-          name="commit"
+          name="commitSha"
           label="Commit SHA"
           margin="normal"
           component={ FormField }
@@ -48,6 +49,7 @@ const ScheduleJobForm = ({ classes, handleSubmit }) => (
         </Button>
       </Grid>
     </Grid>
+    <Typography type="caption" color="error">{ error }</Typography>
   </form>
 )
 
@@ -57,10 +59,10 @@ export default compose(
   reduxForm({
     form: 'scheduleJob',
     validate: reduxFormValidate({
-      branch: {
+      branchName: {
         required: true
       },
-      commit: {
+      commitSha: {
         required: true,
       },
       repoSlug: {

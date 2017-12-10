@@ -7,6 +7,7 @@ import NotFoundPage from 'containers/pages/NotFoundPage'
 import ReposListPage from 'containers/pages/ReposListPage'
 import RepoDetailsPage from 'containers/pages/RepoDetailsPage'
 import BenchmarkDetailsPage from 'containers/pages/BenchmarkDetailsPage'
+import JobDetailsPage from 'containers/pages/JobDetailsPage'
 
 export default ({ store, history }) => (
   <Router history={ syncHistoryWithStore(history, store) }>
@@ -19,6 +20,7 @@ export default ({ store, history }) => (
           <Route path="benchmark/*" component={ BenchmarkDetailsPage } />
         </Route>
       </Route>
+      <Route path="job/:jobId" component={ JobDetailsPage } />
       <Route path="*" component={ NotFoundPage } />
     </Route>
   </Router>
