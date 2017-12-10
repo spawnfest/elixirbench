@@ -35,4 +35,4 @@ Your app is ready to be deployed!
 yarn deploy
 ```
 
-This command build the project and publish it to gh pages of this repo
+Builds the project and publishes it to gh pages of this repo
