@@ -34,10 +34,8 @@ mix deps.get
 echo "[I] Compiling the source"
 mix compile
 
-echo "[I] Persisting job info"
-elixir -v > ${BENCHMARKING_RESULTS_PATH}/elixir.version
-erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(Version), halt().' -noshell > ${BENCHMARKING_RESULTS_PATH}/erlang.version
-cat mix.lock > ${BENCHMARKING_RESULTS_PATH}/mix.lock
+echo "[I] Persisting mix.lock file"
+cat mix.lock > ${BENCHMARKS_OUTPUT_PATH}/mix.lock
 
 echo "[I] Executing benchmarks"
 if [[ "$1" == "mix run bench/bench_helper.exs" ]]; then

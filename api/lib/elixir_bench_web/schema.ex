@@ -31,6 +31,13 @@ defmodule ElixirBenchWeb.Schema do
         end
       end
     end
+
+    field :measurement, non_null(:measurement) do
+      arg :id, non_null(:id)
+      resolve fn %{id: id}, _ ->
+        Benchmarks.fetch_measurement(id)
+      end
+    end
   end
 
   def context(ctx) do
