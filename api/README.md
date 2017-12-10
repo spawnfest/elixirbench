@@ -11,8 +11,6 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 To see the GraphiQL interface documenting the API, visit
 [`localhost:4000/api/graphiql](http://locahost:4000/api/graphiql) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
-
 ## Learn more
 
   * Official website: http://www.phoenixframework.org/
