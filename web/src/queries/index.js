@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const getRepos = gql`
-  query {
+  query GetListOfRepos {
     repos {
       name
       slug
@@ -11,11 +11,30 @@ export const getRepos = gql`
 `
 
 export const getRepo = gql`
-  query ($slug: String) {
+  query GetRepoBySlug ($slug: String) {
     repo(slug: $slug) {
       name
       slug
       owner
+      benchmarks {
+        name
+        measurements {
+          collectedAt
+          result {
+            average
+            ips
+            maximum
+            median
+            minimum
+            mode
+            runTimes
+            sampleSize
+            stdDev
+            stdDevIps
+            stdDevRatio
+          }
+        }
+      }
     }
   }
 `
