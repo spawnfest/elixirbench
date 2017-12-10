@@ -1,27 +1,13 @@
 defmodule ElixirBench.Benchmarks.Measurement do
   use Ecto.Schema
   import Ecto.Changeset
-  alias ElixirBench.Benchmarks.{Benchmark, Measurement}
+  alias ElixirBench.Benchmarks.{Benchmark, Job, Measurement}
 
   schema "measurements" do
-    field :collected_at, :utc_datetime
     belongs_to :benchmark, Benchmark
-
-    field :commit_sha, :string
-    field :commit_message, :string
-    field :commited_date, :utc_datetime
-    field :commit_url, :string
-
-    field :elixir_version, :string
-    field :erlang_version, :string
-    field :dependency_versions, {:map, :string}
-    field :cpu, :string
-    field :cpu_count, :integer
-    # in mb
-    field :memory, :integer
+    belongs_to :job, Job
 
     field :sample_size, :integer
-
     field :mode, :float
     field :minimum, :float
     field :median, :float
@@ -40,17 +26,6 @@ defmodule ElixirBench.Benchmarks.Measurement do
   end
 
   @fields [
-    :collected_at,
-    :commit_sha,
-    :commit_message,
-    :commited_date,
-    :commit_url,
-    :elixir_version,
-    :erlang_version,
-    :dependency_versions,
-    :cpu,
-    :cpu_count,
-    :memory,
     :sample_size,
     :mode,
     :minimum,
