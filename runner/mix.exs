@@ -26,6 +26,7 @@ defmodule ElixirBench.Runner.MixProject do
       {:confex, "~> 3.3"},
       {:hackney, "~> 1.10"},
       {:antidote, github: "michalmuskala/antidote", branch: "master"},
+      {:benchee, "~> 0.11.0"}
     ]
   end
 end

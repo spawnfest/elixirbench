@@ -1,62 +1,192 @@
-
-
 defmodule ElixirBench.Runner.Job do
-  alias ElixirBench.Runner.Config
+  @moduledoc """
+  This module is responsible for starting and halting jobs.
 
-  defstruct id: nil, config: %ElixirBench.Runner.Config{}, log: nil, results: nil, containers: []
+  Under the hood it's using CLI integration to docker-compose.
+  """
+  alias ElixirBench.Runner.{Job, Config}
 
-  @static_docker_compose_args ~w[up --force-recreate --no-build --abort-on-container-exit --remove-orphans]
+  defstruct id: nil,
+            repo_slug: nil,
+            branch: nil,
+            commit: nil,
+            config: %Config{},
+            status: nil,
+            log: nil,
+            context: %{},
+            measurements: %{}
 
-  # TODO: We need to clean docker cache after each run, to don't blow up VM disk
+  # --force-recreate -          Recreate containers even if their configuration and image haven't changed;
+  # --no-build -                We don't allow users to use our benchmarking service to build images,
+  #                             TODO: warn when `build` config key is present in docker deps;
+  # --abort-on-container-exit - Stops all containers when one of them exists,
+  #                             this allows us to shut down all deps when benchmarks are completed;
+  # --remove-orphans -          Remove containers for services not defined in the Compose file.
+  @static_compose_args ~w[up --force-recreate --no-build --abort-on-container-exit --remove-orphans]
+
+  # Both host and container:runner network modes are allowing
+  # to use localhost for sending requests to a helper container,
+  # with following cons:
+  # * `container:runner` network mode violates start order,
+  # so runner is started before DB's, but source pooling saves the day;
+  # * `host` binds to all host interfaces, which is not best for
+  # security but gives better performance.
+  @network_mode "host"
+
+  @doc """
+  Executes a benchmarking job for a specific commit.
+  """
   def start_job(id, repo_slug, branch, commit) do
-    # TODO: Ensure no jobs are running
     with {:ok, config} <- Config.fetch_config_by_repo_slug(repo_slug, commit) do
-      benchmarking_results_path = Confex.fetch_env!(:runner, :benchmarking_results_path)
-      container_benchmarking_results_path = Confex.fetch_env!(:runner, :container_benchmarking_results_path)
-      volume_mount = "#{benchmarking_results_path}/#{id}"
-      File.mkdir_p!(volume_mount)
+      ensure_no_other_jobs!()
 
-      runner_env =
-        config.environment_variables
-        |> Map.put("ELIXIRBENCH_REPO_SLUG", repo_slug)
-        |> Map.put("ELIXIRBENCH_REPO_BRANCH", branch)
-        |> Map.put("ELIXIRBENCH_REPO_COMMIT", commit)
+      job = %Job{id: id, repo_slug: repo_slug, branch: branch, commit: commit, config: config}
 
-      services =
-        config.deps
-        |> Enum.reduce(%{}, fn dep, services ->
-          default_name =
-            dep
-            |> Map.fetch!("image")
-            |> dep_name_from_image()
-
-          name = Map.get(dep, "container_name", default_name)
-
-          Map.put(services, name, dep)
+      task =
+        Task.Supervisor.async_nolink(ElixirBench.Runner.JobsSupervisor, fn ->
+          run_job(job)
         end)
 
-      services =
-        Map.put(services, "runner", %{
-          image: "elixirbench/#{config.elixir_version}-#{config.erlang_version}",
-          volumes: ["#{volume_mount}:#{container_benchmarking_results_path}"],
-          links: Map.keys(services),
-          environment: runner_env
-        })
+      timeout = Confex.fetch_env!(:runner, :job_timeout)
+      case Task.yield(task, timeout) || Task.shutdown(task) do
+        {:ok, result} -> result
 
-      compose_config = Antidote.encode!(%{version: "3", services: services})
-      compose_config_path = "#{benchmarking_results_path}/#{id}-config.yml"
-      File.write!(compose_config_path, compose_config)
-
-      IO.inspect services
-
-      {log, exit_code} = System.cmd("docker-compose", ["-f", compose_config_path] ++ @static_docker_compose_args)
-
-      IO.puts log
+        nil ->
+          %{job | status: 127, log: "Job execution timed out"}
+      end
     end
+  end
+
+  defp ensure_no_other_jobs! do
+    %{active: 0} = Supervisor.count_children(ElixirBench.Runner.JobsSupervisor)
+  end
+
+  @doc false
+  # Public for testing purposes
+  def run_job(job) do
+    benchmars_output_path = get_benchmars_output_path(job)
+    File.mkdir_p!(benchmars_output_path)
+
+    compose_config = get_compose_config(job)
+    compose_config_path = "#{benchmars_output_path}/#{job.id}-config.yml"
+    File.write!(compose_config_path, compose_config)
+
+    try do
+      {log, status} = System.cmd("docker-compose", ["-f", compose_config_path] ++ @static_compose_args)
+      measurements = collect_measurements(benchmars_output_path)
+      context = collect_context(benchmars_output_path)
+      %{job | log: log, status: status, measurements: measurements, context: context}
+    after
+      # Stop all containers and delete all containers, images and build cache
+      # {_log, 0} = System.cmd("docker", ~w[system prune -a -f])
+
+      # Clean benchmarking temporary files
+      File.rm_rf!(benchmars_output_path)
+    end
+  end
+
+  defp get_benchmars_output_path(%Job{id: id}) do
+    Confex.fetch_env!(:runner, :benchmars_output_path) <> "/" <> id
+  end
+
+  defp get_compose_config(job) do
+    Antidote.encode!(%{version: "3", services: build_services(job)})
+  end
+
+  defp build_services(job) do
+    %{id: id, config: config} = job
+
+    services =
+      config.deps
+      |> Enum.reduce(%{}, fn dep, services ->
+        dep = Map.put(dep, "network_mode", @network_mode)
+        name = "job_" <> id <> "_" <> get_dep_container_name(dep)
+        Map.put(services, name, dep)
+      end)
+
+    Map.put(services, "runner", build_runner_service(job, Map.keys(services)))
+  end
+
+  defp get_dep_container_name(%{"container_name" => container_name}), do: container_name
+  defp get_dep_container_name(%{"image" => image}), do: dep_name_from_image(image)
+
+  defp build_runner_service(job, deps) do
+    container_benchmars_output_path = Confex.fetch_env!(:runner, :container_benchmars_output_path)
+
+    %{
+        network_mode: @network_mode,
+        image: "elixirbench/runner:#{job.config.elixir_version}-#{job.config.erlang_version}",
+        volumes: ["#{get_benchmars_output_path(job)}:#{container_benchmars_output_path}"],
+        depends_on: deps,
+        environment: build_runner_environment(job)
+      }
+  end
+
+  defp build_runner_environment(job) do
+    %{repo_slug: repo_slug, branch: branch, commit: commit, config: config} = job
+
+    config.environment_variables
+    |> Map.put("ELIXIRBENCH_REPO_SLUG", repo_slug)
+    |> Map.put("ELIXIRBENCH_REPO_BRANCH", branch)
+    |> Map.put("ELIXIRBENCH_REPO_COMMIT", commit)
   end
 
   defp dep_name_from_image(image) do
     [slug | _tag] = String.split(image, ":")
     slug |> String.split("/") |> List.last()
+  end
+
+  defp collect_measurements(benchmars_output_path) do
+    "#{benchmars_output_path}/*.json"
+    |> Path.wildcard()
+    |> Enum.flat_map(fn path ->
+      benchmark_name = Path.basename(path, ".json")
+      path |> File.read!() |> Antidote.decode!() |> format_measurement(benchmark_name)
+    end)
+  end
+
+  defp format_measurement(measurement, benchmark_name) do
+    run_times = Map.get(measurement, "run_times")
+    statistics = Map.get(measurement, "statistics")
+
+    Enum.reduce(run_times, [], fn {name, runs}, acc ->
+     [{benchmark_name <> "/" <> name, %{runs: runs, statistics: Map.fetch!(statistics, name)}}] ++ acc
+    end)
+  end
+
+  defp collect_context(benchmars_output_path) do
+    mix_deps = read_mix_deps("#{benchmars_output_path}/mix.lock")
+
+    %{
+      mix_deps: mix_deps,
+      worker_num_cores: Benchee.System.num_cores(),
+      worker_os: Benchee.System.os(),
+      worker_available_memory: Benchee.System.available_memory(),
+      worker_cpu_speed: Benchee.System.cpu_speed()
+    }
+  end
+
+  def read_mix_deps(file) do
+    case File.read(file) do
+      {:ok, info} ->
+        case Code.eval_string(info, [], file: file) do
+          {lock, _binding} when is_map(lock) ->
+            Enum.map(lock, fn
+              {dep_name, ast} when elem(ast, 0) == :git ->
+                {dep_name, elem(ast, 1)}
+
+              {dep_name, ast} when elem(ast, 0) == :hex ->
+                {dep_name, elem(ast, 2)}
+
+              {dep_name, ast} when elem(ast, 0) == :path ->
+                {dep_name, elem(ast, 1)}
+            end)
+
+          {_, _binding} ->
+            %{}
+        end
+      {:error, _} ->
+        %{}
+    end
   end
 end
