@@ -64,6 +64,7 @@ defmodule ElixirBenchWeb.Schema do
   def context(ctx) do
     loader =
       Dataloader.new
+      |> Dataloader.add_source(Repos, Repos.data())
       |> Dataloader.add_source(Benchmarks, Benchmarks.data())
 
     Map.put(ctx, :loader, loader)

@@ -3,7 +3,7 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
   use Absinthe.Ecto, repo: ElixirBench.Repo
   import Absinthe.Resolution.Helpers
 
-  alias ElixirBench.Benchmarks
+  alias ElixirBench.{Repos, Benchmarks}
 
   object :repo do
     field :owner, :string
@@ -34,6 +34,16 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
     field :claimed_at, :datetime
     field :completed_at, :datetime
     field :log, :string
+    field :repo_slug, :string do
+      resolve fn %{repo_id: repo_id}, _, %{context: %{loader: loader}} ->
+        loader
+        |> Dataloader.load(Repos, Repos.Repo, repo_id)
+        |> on_load(fn loader ->
+          %{owner: owner, name: name} = Dataloader.get(loader, Repos, Repos.Repo, repo_id)
+          {:ok, "#{owner}/#{name}"}
+        end)
+      end
+    end
   end
 
   object :benchmark do

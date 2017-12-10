@@ -4,6 +4,14 @@ defmodule ElixirBench.Repos do
 
   alias ElixirBench.Repos
 
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _args) do
+    queryable
+  end
+
   def list_repos() do
     Repo.all(Repos.Repo)
   end
