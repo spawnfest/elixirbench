@@ -1,7 +1,10 @@
 import React from 'react';
-import { compose, pure } from 'recompose'
+import { compose, pure, withHandlers } from 'recompose'
 import { withStyles } from 'material-ui/styles';
-import { getRepos } from 'queries'
+import { getRepos } from 'graphql/queries'
+import { scheduleJob } from 'graphql/mutations'
+import { SubmissionError } from 'redux-form'
+
 import { graphql } from 'react-apollo'
 
 import Page from 'components/Page'
@@ -14,7 +17,7 @@ import Grid from 'material-ui/Grid'
 
 import styles from './styles'
 
-const ReposListPage = ({ classes, data, children }) => (
+const ReposListPage = ({ classes, data, children, onSubmit }) => (
   <Page>
     <Typography type="display2" align="center">
       What is ElixirBench?
@@ -35,13 +38,10 @@ const ReposListPage = ({ classes, data, children }) => (
             Test your own repo
           </Typography>
           <div className={ classes.form }>
-            <ScheduleJobForm onSubmit={ v => console.log(v) } />
+            <ScheduleJobForm onSubmit={ onSubmit } />
           </div>
         </Grid>
       </Grid>
-      <Paper className={ classes.scheduleJob }>
-
-      </Paper>
     </div>
   </Page>
 )
@@ -49,5 +49,19 @@ const ReposListPage = ({ classes, data, children }) => (
 export default compose(
   pure,
   graphql(getRepos),
-  withStyles(styles)
+  graphql(scheduleJob),
+  withStyles(styles),
+  withHandlers({
+    onSubmit: ({ mutate, router }) => values => (
+      mutate({
+        variables: values
+      }).then(({ data }) => {
+        router.push(`/job/${data.scheduleJob.id}`)
+      }).catch((error, ...args) => {
+        throw new SubmissionError({
+          _error: error.message
+        })
+      })
+    )
+  })
 )(ReposListPage);

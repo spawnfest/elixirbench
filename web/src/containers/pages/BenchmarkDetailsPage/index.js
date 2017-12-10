@@ -4,7 +4,7 @@ import { get, mapValues, round } from 'lodash'
 import { withRouter } from 'react-router'
 import { compose, pure, withProps } from 'recompose'
 import { withStyles } from 'material-ui/styles'
-import { getBenchmark } from 'queries'
+import { getBenchmark } from 'graphql/queries'
 import { graphql } from 'react-apollo'
 
 import { Line, Area } from 'recharts'

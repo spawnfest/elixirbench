@@ -7,7 +7,10 @@ import Typography from 'material-ui/Typography'
 import Page from 'components/Page'
 
 const NotFoundPage = ({ onClickGoToHomePage }) => (
-  <Page title="Page not found">
+  <Page>
+    <Typography type="display2" paragraph gutterBottom>
+      Page not found ¯\_(ツ)_/¯
+    </Typography>
     <Typography type="body1" paragraph>
       You may have mistyped the address or the page may have moved.
     </Typography>
