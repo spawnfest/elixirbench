@@ -36,7 +36,7 @@ RUN apk --no-cache --update add \
 
 # Configure bench runner
 ENV PROJECT_PATH=/opt/app \
-    BENCHMARKING_RESULTS_PATH=/var/bench
+    BENCHMARKS_OUTPUT_PATH=/var/bench
 
 # Run suite from non-root user
 RUN addgroup -S app && \
@@ -45,17 +45,17 @@ RUN addgroup -S app && \
 # Create app folders
 RUN set -xe; \
     mkdir -p ${PROJECT_PATH} && \
-    mkdir -p ${BENCHMARKING_RESULTS_PATH} && \
+    mkdir -p ${BENCHMARKS_OUTPUT_PATH} && \
     chown -R app ${HOME} && \
-    chown -R app ${BENCHMARKING_RESULTS_PATH} && \
-    chmod 700 ${PROJECT_PATH} ${BENCHMARKING_RESULTS_PATH}
+    chown -R app ${BENCHMARKS_OUTPUT_PATH} && \
+    chmod 700 ${PROJECT_PATH} ${BENCHMARKS_OUTPUT_PATH}
 
 # Change workdir
 WORKDIR ${PROJECT_PATH}
 RUN cd ${PROJECT_PATH}
 
 # Export benchmarks results as a volume
-VOLUME ${BENCHMARKING_RESULTS_PATH}
+VOLUME ${BENCHMARKS_OUTPUT_PATH}
 
 # Add entrypoint that fetches project source
 COPY docker-entrypoint.sh /usr/local/bin/
