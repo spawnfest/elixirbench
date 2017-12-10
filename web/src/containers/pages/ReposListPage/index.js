@@ -12,7 +12,6 @@ import ReposList from 'containers/blocks/ReposList'
 import ScheduleJobForm from 'containers/forms/ScheduleJobForm'
 
 import Typography from 'material-ui/Typography'
-import Paper from 'material-ui/Paper'
 import Grid from 'material-ui/Grid'
 
 import styles from './styles'

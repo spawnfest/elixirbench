@@ -29,7 +29,7 @@ export default compose(
   withPropsOnChange(
     ['meta'],
     ({ meta }) => ({
-      error: (meta.visited && meta.dirty || meta.submitFailed) && meta.error
+      error: ((meta.visited && meta.dirty) || meta.submitFailed) && meta.error
     })
   ),
   withStyles(styles)
