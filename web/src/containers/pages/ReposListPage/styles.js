@@ -6,5 +6,9 @@ export default () => ({
   },
   form: {
     paddingTop: 8,
+    marginBottom: 48,
+  },
+  lastJobs: {
+    marginTop: 12,
   }
 })
