@@ -68,7 +68,7 @@ defmodule ElixirBench.Benchmarks do
 
   def claim_job(%Runner{} = runner) do
     Repo.transaction(fn ->
-      with {:ok, job} <- fetch_unclaimed_job() do
+      with {:ok, job} <- fetch_unclaimed_job(runner) do
         changeset = Job.claim_changeset(job, runner.id)
         Repo.update!(changeset)
       else
@@ -113,9 +113,11 @@ defmodule ElixirBench.Benchmarks do
     |> Repo.insert()
   end
 
-  defp fetch_unclaimed_job() do
+  defp fetch_unclaimed_job(runner) do
+    # Unclaimed or claimed by this runner but not completed
     Repo.fetch(from j in Job,
       where: is_nil(j.claimed_by) and is_nil(j.claimed_at) and is_nil(j.completed_at),
+      or_where: j.claimed_by == ^runner.id and not is_nil(j.claimed_at) and is_nil(j.completed_at),
       lock: "FOR UPDATE SKIP LOCKED",
       order_by: j.inserted_at,
       limit: 1

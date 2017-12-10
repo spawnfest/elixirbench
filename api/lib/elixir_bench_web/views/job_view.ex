@@ -2,17 +2,18 @@ defmodule ElixirBenchWeb.JobView do
   use ElixirBenchWeb, :view
   alias ElixirBenchWeb.JobView
 
-  def render("index.json", %{jobs: jobs}) do
-    %{data: render_many(jobs, JobView, "job.json")}
+  def render("index.json", %{jobs: jobs, repo: repo}) do
+    %{data: render_many(jobs, JobView, "job.json", repo: repo)}
   end
 
-  def render("show.json", %{job: job}) do
-    %{data: render_one(job, JobView, "job.json")}
+  def render("show.json", %{job: job, repo: repo}) do
+    %{data: render_one(job, JobView, "job.json", repo: repo)}
   end
 
-  def render("job.json", %{job: %{config: config} = job}) do
+  def render("job.json", %{job: %{config: config} = job, repo: repo}) do
     %{
       id: job.id,
+      repo_slug: "#{repo.owner}/#{repo.name}",
       branch_name: job.branch_name,
       commit_sha: job.commit_sha,
       config: %{
