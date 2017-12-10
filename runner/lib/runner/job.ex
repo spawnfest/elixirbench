@@ -76,7 +76,7 @@ defmodule ElixirBench.Runner.Job do
       %{job | log: log, status: status, measurements: measurements, context: context}
     after
       # Stop all containers and delete all containers, images and build cache
-      # {_log, 0} = System.cmd("docker", ~w[system prune -a -f])
+      {_log, 0} = System.cmd("docker", ~w[system prune -a -f])
 
       # Clean benchmarking temporary files
       File.rm_rf!(benchmars_output_path)
