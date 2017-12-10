@@ -32,8 +32,8 @@
     "build": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts build",
     "test": "cross-env REACT_APP_VERSION=`node -p \"require('./package.json').version\"` NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && yarn ghpages",
-    "ghpages": "ghpages -p build"
+    "predeploy": "yarn build",
+    "deploy": "ghpages -p build"
   },
   "devDependencies": {
     "cross-env": "^5.1.1",
