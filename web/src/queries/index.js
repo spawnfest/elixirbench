@@ -46,7 +46,6 @@ export const getBenchmark = gql`
       measurements {
         collectedAt
         commit {
-          commitedDate
           message
           sha
           url

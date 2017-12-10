@@ -9,5 +9,9 @@ export default () => ({
   },
   logo: {
     color: 'white',
+  },
+  logoIcon: {
+    marginRight: 5,
+    marginBottom: -4,
   }
 })

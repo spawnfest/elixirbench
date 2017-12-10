@@ -10,6 +10,7 @@ import Grid from 'material-ui/Grid'
 
 import GridContainer from 'components/GridContainer'
 import GithubLogo from 'components/GithubLogo'
+import ElixirBenchLogo from 'components/ElixirBenchLogo'
 
 import styles from './styles'
 
@@ -21,7 +22,8 @@ const Navigation = ({ classes, children }) => (
           <Grid item>
             <Link to="/" className={ classes.logo }>
               <Typography type="title" color="inherit">
-                  Elixir<b className={ classes.bolder }>Bench</b>
+                <ElixirBenchLogo className={ classes.logoIcon } />
+                Elixir<b className={ classes.bolder }>Bench</b>
               </Typography>
             </Link>
           </Grid>
