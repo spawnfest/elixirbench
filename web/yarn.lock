@@ -5678,6 +5678,10 @@ react-nebo15-validate@^0.1.13:
     prop-types "^15.6.0"
     react "^15.4.2"
 
+react-nl2br@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-nl2br/-/react-nl2br-0.4.0.tgz#cb9d9af7d15c91303a50a633a489ee8ca055bf24"
+
 react-popper@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.4.tgz#8649d539837e7c6f47bc9b24c9cf57a404e199a1"

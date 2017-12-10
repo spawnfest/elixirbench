@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose, pure } from 'recompose'
 import { withStyles } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import purple from 'material-ui/colors/purple';
 
 import Grid from 'components/Grid'
 import GridContainer from 'components/GridContainer'
@@ -10,6 +12,12 @@ import Footer from 'containers/blocks/Footer'
 
 import 'reset.css'
 import styles from './styles'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 
 const AppLayout = ({ classes, children }) => (
   <GridContainer>
