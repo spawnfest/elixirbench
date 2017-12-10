@@ -14,8 +14,8 @@ defmodule ElixirBench.Runner.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {ElixirBench.Runner.Application, []}
+      mod: {ElixirBench.Runner.Application, []},
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -26,7 +26,8 @@ defmodule ElixirBench.Runner.MixProject do
       {:confex, "~> 3.3"},
       {:hackney, "~> 1.10"},
       {:antidote, github: "michalmuskala/antidote", branch: "master"},
-      {:benchee, "~> 0.11.0"}
+      {:benchee, "~> 0.11.0"},
+      {:distillery, "~> 1.5", runtime: false}
     ]
   end
 end

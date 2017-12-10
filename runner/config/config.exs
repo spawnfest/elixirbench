@@ -10,3 +10,5 @@ config :runner, :benchmars_output_path, {:system, "BENCHMARKS_OUTPUT_PATH", "/tm
 config :runner, :container_benchmars_output_path, "/var/bench"
 
 config :runner, :job_timeout, {:system, :integer, "JOB_TIMEOUT", 900_000}
+
+config :logger, level: :info
