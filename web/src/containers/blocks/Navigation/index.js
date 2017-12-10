@@ -32,7 +32,7 @@ const Navigation = ({ classes, children }) => (
               <Grid item>
                 <a
                   className={ classes.icon }
-                  href={`https://github.com/spawnfest/elixirchain`}
+                  href={`https://github.com/spawnfest/elixirbench`}
                   rel="noreferrer nofollow"
                   target="__blank"
                 >

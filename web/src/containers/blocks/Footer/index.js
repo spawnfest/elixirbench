@@ -13,10 +13,10 @@ const Footer = ({ classes, children }) => (
       <Typography>
         2017 { new Date().getFullYear() === 2017 ? '' : ` - ${new Date().getFullYear()}`} ❤&nbsp;
         <a
-          href={`https://github.com/spawnfest/elixirchain`}
+          href={`https://github.com/spawnfest/elixirbench`}
           rel="noreferrer nofollow"
           target="__blank"
-        >ElixirChain</a>
+        >ElixirBench</a>
       </Typography>
     </Grid>
   </Grid>

@@ -54,4 +54,4 @@ You can find code sample in [Ecto repo](https://github.com/elixir-ecto/ecto/tree
 
 ### Running benchmarks
 
-Benchmarking UI is available on the [official website](https://spawnfest.github.io/elixirchain/#/).
+Benchmarking UI is available on the [official website](https://spawnfest.github.io/elixirbench/#/).
