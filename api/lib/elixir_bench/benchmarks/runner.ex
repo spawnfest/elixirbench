@@ -19,7 +19,7 @@ defmodule ElixirBench.Benchmarks.Runner do
     |> hash_api_key()
   end
 
-  def verify_api_key(%Runner{api_key_hash: key_hash}, key) do
+  def verify_api_key?(%Runner{api_key_hash: key_hash}, key) do
     Bcrypt.verify_pass(key, key_hash)
   end
 

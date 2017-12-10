@@ -12,6 +12,7 @@ defmodule ElixirBench.Benchmarks.Config do
     field :environment, {:map, :string}, default: %{}
     embeds_one :deps, Dep, primary_key: false do
       embeds_many :docker, Docker, primary_key: {:image, :string, []} do
+        field :container_name, :string
         field :environment, {:map, :string}, default: %{}
       end
     end
@@ -33,7 +34,7 @@ defmodule ElixirBench.Benchmarks.Config do
 
   defp docker_changeset(docker, attrs) do
     docker
-    |> cast(attrs, [:image, :environment])
-    |> validate_required([:environment])
+    |> cast(attrs, [:image, :container_name, :environment])
+    |> validate_required([:image])
   end
 end

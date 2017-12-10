@@ -26,12 +26,26 @@ defmodule ElixirBench.Benchmarks do
     |> Repo.insert()
   end
 
+  def authenticate_runner(name, api_key) do
+    with {:ok, runner} <- Repo.fetch(where(Runner, name: ^name)) do
+      if Runner.verify_api_key?(runner, api_key) do
+        {:ok, runner}
+      else
+        {:error, :not_found}
+      end
+    end
+  end
+
   def fetch_benchmark(repo_id, name) do
     Repo.fetch(where(Benchmark, repo_id: ^repo_id, name: ^name))
   end
 
   def fetch_measurement(id) do
     Repo.fetch(where(Measurement, id: ^id))
+  end
+
+  def fetch_job(id) do
+    Repo.fetch(where(Job, id: ^id))
   end
 
   def list_benchmarks_by_repo_id(repo_ids) do
@@ -100,6 +114,7 @@ defmodule ElixirBench.Benchmarks do
     Repo.fetch(from j in Job,
       where: is_nil(j.claimed_by) and is_nil(j.claimed_at) and is_nil(j.completed_at),
       lock: "FOR UPDATE SKIP LOCKED",
+      order_by: j.inserted_at,
       limit: 1
     )
   end

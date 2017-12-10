@@ -48,7 +48,8 @@ defmodule ElixirBench.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:hackney, "~> 1.10"},
       {:antidote, github: "michalmuskala/antidote"},
-      {:yamerl, "~> 0.6.0"}
+      {:yamerl, "~> 0.6.0"},
+      {:basic_auth, "~> 2.2"}
     ]
   end
 
