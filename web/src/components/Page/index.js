@@ -18,7 +18,7 @@ const Page = ({ classes, title, maxWidth, backLink, backTitle, children }) => (
         <Grid item>
           <Link to={ backLink }>
             <Grid container direction="row" wrap="nowrap" alignItems="center">
-              <Grid item>
+              <Grid item className={ classes.backIcon }>
                 <KeyboardArrowLeft />
               </Grid>
               <Grid item>
