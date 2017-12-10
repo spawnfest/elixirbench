@@ -27,7 +27,7 @@ const BenchmarkDetailsPage = ({ classes, data, githubUrl, onRestartClick, childr
   >
     <Card>
       <CardHeader
-        title={ `Job: ${ get(data, 'job.id') }` }
+        title={ `Job: ${ get(data, 'job.id', 'n/a') }` }
         subheader={ <a href={githubUrl} target="__blank" rel="nofollow noindex">See the commit in repo</a> }
         action={
           <div className={ classes.restartButton }>
@@ -46,14 +46,22 @@ const BenchmarkDetailsPage = ({ classes, data, githubUrl, onRestartClick, childr
 )
 
 export default compose(
-  pure,
   withRouter,
   graphql(getJob, {
     options: ({ params: { jobId }}) => ({
       variables: {
         id: jobId,
-      }
+      },
+      pollInterval: 5000
     })
+  }),
+  lifecycle({
+    componentDidMount(props) {
+      this.props.data.startPolling(5 * 1000)
+    },
+    componentWillUnmoun(props) {
+      this.props.data.stopPolling()
+    },
   }),
   graphql(scheduleJob),
   withPropsOnChange(
@@ -74,14 +82,6 @@ export default compose(
         router.push(`/job/${data.scheduleJob.id}`)
       })
     }
-  }),
-  lifecycle({
-    componentDidMount(props) {
-      this.props.data.startPolling(5 * 1000)
-    },
-    componentWillUnmoun(props) {
-      this.props.data.stopPolling()
-    },
   }),
   withStyles(styles),
 )(BenchmarkDetailsPage);
