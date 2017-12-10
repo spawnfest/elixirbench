@@ -6,6 +6,7 @@ defmodule ElixirBench.Benchmarks.Job do
   alias ElixirBench.Benchmarks.{Runner, Job, Config}
 
   schema "jobs" do
+    field :uuid, :binary_id
     field :repo_id, :id
 
     belongs_to :claimant, Runner, foreign_key: :claimed_by
@@ -55,6 +56,7 @@ defmodule ElixirBench.Benchmarks.Job do
     job
     |> cast(attrs, @create_fields)
     |> validate_required(@create_fields)
+    |> put_change(:uuid, Ecto.UUID.generate())
   end
 
   def submit_changeset(%Job{} = job, attrs) do

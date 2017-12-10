@@ -12,7 +12,7 @@ defmodule ElixirBenchWeb.JobView do
 
   def render("job.json", %{job: %{config: config} = job, repo: repo}) do
     %{
-      id: job.id,
+      id: job.uuid,
       repo_slug: "#{repo.owner}/#{repo.name}",
       branch_name: job.branch_name,
       commit_sha: job.commit_sha,

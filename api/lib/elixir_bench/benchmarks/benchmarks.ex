@@ -47,6 +47,10 @@ defmodule ElixirBench.Benchmarks do
     Repo.fetch(where(Job, id: ^id))
   end
 
+  def fetch_job_by_uuid(uuid) do
+    Repo.fetch(where(Job, uuid: ^uuid))
+  end
+
   def list_benchmarks_by_repo_id(repo_ids) do
     Repo.all(from(b in Benchmark, where: b.repo_id in ^repo_ids))
   end

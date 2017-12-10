@@ -14,7 +14,7 @@ defmodule ElixirBenchWeb.JobController do
   end
 
   def update(conn, %{"id" => id, "job" => job_params}) do
-    with {:ok, %Job{} = job} <- Benchmarks.fetch_job(id),
+    with {:ok, %Job{} = job} <- Benchmarks.fetch_job_by_uuid(id),
          :ok <- Benchmarks.submit_job(job, job_params) do
       conn
       |> send_resp(:no_content, "")
