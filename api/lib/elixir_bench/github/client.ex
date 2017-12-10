@@ -28,7 +28,6 @@ defmodule ElixirBench.Github.Client do
     ssl_options = client.ssl_options
     options = [:with_body, ssl_options: ssl_options]
 
-    IO.inspect url
     case :hackney.get(url, headers, <<>>, options) do
       {:ok, 200, _headers, data} ->
         cb.(data)
