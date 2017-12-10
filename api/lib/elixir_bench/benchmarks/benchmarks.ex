@@ -6,6 +6,18 @@ defmodule ElixirBench.Benchmarks do
 
   alias ElixirBench.Benchmarks.{Benchmark, Measurement, Job, Runner}
 
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(Benchmark, %{repo_id: repo_id}) do
+    from b in Benchmark, where: b.repo_id == ^repo_id
+  end
+
+  def query(queryable, _args) do
+    queryable
+  end
+
   def create_runner(attrs) do
     %Runner{}
     |> Runner.changeset(attrs)

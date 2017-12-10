@@ -25,17 +25,25 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
   end
 
   object :measurement do
-    field :collected_at, :datetime
-    field :commit, :commit, resolve: parent()
-    field :environment, :environment, resolve: parent()
+    field :collected_at, :datetime do
+      resolve fn measurement, _, %{context: %{loader: loader}} ->
+        loader
+        |> Dataloader.load(Benchmarks, :job, measurement)
+        |> on_load(fn loader ->
+          %{completed_at: value} = Dataloader.get(loader, Benchmarks, :job, measurement)
+          {:ok, value}
+        end)
+      end
+    end
+    field :commit, :commit, resolve: dataloader(Benchmarks, :job)
+    field :environment, :environment, resolve: dataloader(Benchmarks, :job)
     field :result, :result, resolve: parent()
   end
 
   object :commit do
-    field :sha, :string
-    field :message, :string
-    field :commited_date, :datetime
-    field :url, :string
+    field :sha, :string, resolve: key(:commit_sha)
+    field :message, :string, resolve: key(:commit_message)
+    field :url, :string, resolve: key(:commit_url)
   end
 
   object :environment do
@@ -45,7 +53,7 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
       resolve: map_to_list(:dependency_versions, :name, :version)
     field :cpu, :string
     field :cpu_count, :integer
-    field :memory, :integer
+    field :memory, :integer, resolve: key(:memory_mb)
   end
 
   object :package_version do
@@ -79,6 +87,12 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
   defp parent() do
     fn parent, _, _ ->
       {:ok, parent}
+    end
+  end
+
+  defp key(name) do
+    fn %{^name => value}, _, _ ->
+      {:ok, value}
     end
   end
 
