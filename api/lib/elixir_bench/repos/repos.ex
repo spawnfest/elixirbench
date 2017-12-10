@@ -9,12 +9,15 @@ defmodule ElixirBench.Repos do
   end
 
   def fetch_repo_by_slug(slug) do
-    with [owner, name] <- String.split(slug, "/", parts: 2) do
-      query = where(Repos.Repo, [owner: ^owner, name: ^name])
-      Repo.fetch(query)
-    else
-      _ -> {:error, :invalid_slug}
-    end
+    parse_slug(slug, fn owner, name ->
+      Repo.fetch(where(Repos.Repo, [owner: ^owner, name: ^name]))
+    end)
+  end
+
+  def fetch_repo_id_by_slug(slug) do
+    parse_slug(slug, fn owner, name ->
+      Repo.fetch(from r in Repos.Repo, where: [owner: ^owner, name: ^name], select: r.id)
+    end)
   end
 
   def create_repo(attrs \\ %{}) do
@@ -31,5 +34,12 @@ defmodule ElixirBench.Repos do
 
   def delete_repo(%Repos.Repo{} = repo) do
     Repo.delete(repo)
+  end
+
+  defp parse_slug(slug, callback) do
+    case String.split(slug, "/", trim: true, parts: 2) do
+      [owner, name] -> callback.(owner, name)
+      _ -> {:error, :invalid_slug}
+    end
   end
 end

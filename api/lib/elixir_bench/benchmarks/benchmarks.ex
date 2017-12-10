@@ -24,6 +24,10 @@ defmodule ElixirBench.Benchmarks do
     Repo.insert!(%Benchmark{repo_id: repo_id, name: name}, opts)
   end
 
+  def fetch_benchmark(repo_id, name) do
+    Repo.fetch(where(Benchmark, [repo_id: ^repo_id, name: ^name]))
+  end
+
   def list_benchmarks_by_repo_id(repo_ids) do
     Repo.all(from b in Benchmark, where: b.repo_id in ^repo_ids)
   end
