@@ -36,7 +36,8 @@ defmodule ElixirBench.Benchmarks.Job do
     :dependency_versions,
     :cpu,
     :cpu_count,
-    :memory_mb,
+    # TODO: change to a string memory
+    # :memory_mb,
     :log
   ]
 
