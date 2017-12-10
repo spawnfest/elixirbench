@@ -28,6 +28,10 @@ defmodule ElixirBench.Benchmarks do
     Repo.fetch(where(Benchmark, repo_id: ^repo_id, name: ^name))
   end
 
+  def fetch_measurement(id) do
+    Repo.fetch(where(Measurement, id: ^id))
+  end
+
   def list_benchmarks_by_repo_id(repo_ids) do
     Repo.all(from(b in Benchmark, where: b.repo_id in ^repo_ids))
   end

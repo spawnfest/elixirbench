@@ -29,6 +29,7 @@ defmodule ElixirBench.Benchmarks.Measurement do
     :sample_size,
     :mode,
     :minimum,
+    :median,
     :maximum,
     :average,
     :std_dev,

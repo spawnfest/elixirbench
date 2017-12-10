@@ -25,6 +25,7 @@ defmodule ElixirBenchWeb.Schema.ContentTypes do
   end
 
   object :measurement do
+    field :id, :id
     field :collected_at, :datetime do
       resolve fn measurement, _, %{context: %{loader: loader}} ->
         loader
