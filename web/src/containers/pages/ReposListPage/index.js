@@ -19,6 +19,9 @@ const ReposListPage = ({ classes, data, children }) => (
       Long Running Benchmarks for Elixir Projects
     </Typography>
     <div className={ classes.repos }>
+      <div className={ classes.scheduleJob }>
+        <SchedulJobForm onSubmit={ v => console.log(v) } />
+      </div>
       <Typography type="headline" align="left">
         Popular repositories
       </Typography>
