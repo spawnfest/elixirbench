@@ -116,7 +116,7 @@ defmodule ElixirBench.Runner.Job do
     %{
         network_mode: @network_mode,
         image: "elixirbench/runner:#{job.config.elixir_version}-#{job.config.erlang_version}",
-        volumes: ["#{get_benchmars_output_path(job)}:#{container_benchmars_output_path}"],
+        volumes: ["#{get_benchmars_output_path(job)}:#{container_benchmars_output_path}:Z"],
         depends_on: deps,
         environment: build_runner_environment(job)
       }
