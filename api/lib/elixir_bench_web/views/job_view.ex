@@ -11,6 +11,7 @@ defmodule ElixirBenchWeb.JobView do
   end
 
   def render("job.json", %{job: %{config: config} = job, repo: repo}) do
+    docker = get_in(config, [Access.key(:deps, %{}), Access.key(:docker, [])]) || []
     %{
       id: job.uuid,
       repo_slug: "#{repo.owner}/#{repo.name}",
@@ -21,7 +22,7 @@ defmodule ElixirBenchWeb.JobView do
         erlang_version: config.erlang,
         environment_variables: config.environment,
         deps: %{
-          docker: Enum.map(config.deps.docker, &render_docker/1)
+          docker: Enum.map(docker, &render_docker/1)
         }
       }
     }
