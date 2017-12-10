@@ -6,12 +6,24 @@ import { graphql } from 'react-apollo'
 
 import Page from 'components/Page'
 import ReposList from 'containers/blocks/ReposList'
+import Typography from 'material-ui/Typography'
 
 import styles from './styles'
 
 const ReposListPage = ({ classes, data, children }) => (
-  <Page title="Repos">
-    <ReposList repos={ data.repos } />
+  <Page>
+    <Typography type="display2" align="center">
+      What is ElixirBench?
+    </Typography>
+    <Typography align="display1" align="center">
+      Long Running Benchmarks for Elixir Projects
+    </Typography>
+    <div className={ classes.repos }>
+      <Typography type="headline" align="left">
+        Repositories
+      </Typography>
+      <ReposList repos={ data.repos } />
+    </div>
   </Page>
 )
 
