@@ -21,6 +21,16 @@ defmodule ElixirBenchWeb.Schema do
         Repos.fetch_repo_by_slug(slug)
       end
     end
+
+    field :benchmark, non_null(:benchmark) do
+      arg :repo_slug, non_null(:string)
+      arg :name, non_null(:string)
+      resolve fn %{repo_slug: slug, name: name}, _ ->
+        with {:ok, repo_id} <- Repos.fetch_repo_id_by_slug(slug) do
+          Benchmarks.fetch_benchmark(repo_id, name)
+        end
+      end
+    end
   end
 
   def context(ctx) do
