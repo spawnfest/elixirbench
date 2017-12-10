@@ -1,3 +1,5 @@
+<img src="../web/public/images/logo.png" height="68" />
+
 # ElixirBench Runner Container
 
 This is a container that fetches project source and runs benchmarking code.

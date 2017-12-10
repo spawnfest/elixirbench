@@ -1,4 +1,4 @@
-<img src="./web/public/images/logo.svg" height="68" />
+<img src="./web/public/images/logo.png" height="68" />
 
 # ElixirBench
 

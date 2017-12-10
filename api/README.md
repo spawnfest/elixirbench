@@ -1,3 +1,5 @@
+<img src="../web/public/images/logo.png" height="68" />
+
 # ElixirBench
 
 To start your Phoenix server:
