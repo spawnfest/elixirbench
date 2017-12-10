@@ -1,4 +1,8 @@
 defmodule ElixirBench.Runner.Config do
+  @moduledoc """
+  This module is responsible for fetching YAML configuration from project repo
+  and struct in which we would store job configuration.
+  """
   defstruct elixir_version: nil, erlang_version: nil, environment_variables: [], deps: []
 
   @github_base_url "https://raw.githubusercontent.com/"
