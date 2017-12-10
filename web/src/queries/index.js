@@ -38,3 +38,44 @@ export const getRepo = gql`
     }
   }
 `
+
+export const getBenchmark = gql`
+  query GetBenchmark ($name: String, $repoSlug: String) {
+    benchmark(name: $name, repoSlug: $repoSlug) {
+      name
+      measurements {
+        collectedAt
+        commit {
+          commitedDate
+          message
+          sha
+          url
+        }
+        environment {
+          cpu
+          cpuCount
+          dependencyVersions {
+            name
+            version
+          }
+          elixirVersion
+          erlangVersion
+          memory
+        }
+        result {
+          average
+          ips
+          maximum
+          median
+          minimum
+          mode
+          runTimes
+          sampleSize
+          stdDev
+          stdDevIps
+          stdDevRatio
+        }
+      }
+    }
+  }
+`

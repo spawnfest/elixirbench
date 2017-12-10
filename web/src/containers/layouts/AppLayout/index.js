@@ -17,6 +17,7 @@ const AppLayout = ({ classes, children }) => (
       container
       spacing={ 0 }
       direction="column"
+      wrap="nowrap"
       className={ classes.root }
     >
       <Grid item>
