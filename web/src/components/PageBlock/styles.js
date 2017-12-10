@@ -1,6 +1,6 @@
 
 export default () => ({
   root: {
-    marginTop: 12,
+    marginTop: 24,
   },
 })
