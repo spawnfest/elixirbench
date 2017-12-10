@@ -59,6 +59,10 @@ defmodule ElixirBench.Benchmarks do
     Repo.all(from(j in Job, where: j.repo_id in ^repo_ids))
   end
 
+  def list_jobs() do
+    Repo.all(Job)
+  end
+
   def create_job(repo, attrs) do
     changeset = Job.create_changeset(%Job{repo_id: repo.id}, attrs)
     with {:ok, job} <- Ecto.Changeset.apply_action(changeset, :insert),

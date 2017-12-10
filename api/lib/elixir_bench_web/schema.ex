@@ -39,6 +39,12 @@ defmodule ElixirBenchWeb.Schema do
       end
     end
 
+    field :jobs, list_of(:job) do
+      resolve fn _, _ ->
+        {:ok, Benchmarks.list_jobs()}
+      end
+    end
+
     field :job, non_null(:job) do
       arg :id, non_null(:id)
       resolve fn %{id: id}, _ ->
