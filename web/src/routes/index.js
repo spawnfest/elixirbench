@@ -3,7 +3,6 @@ import { IndexRoute, Router, Route, IndexRedirect } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import AppLayout from 'containers/layouts/AppLayout'
-import IndexPage from 'containers/pages/IndexPage'
 import NotFoundPage from 'containers/pages/NotFoundPage'
 import ReposListPage from 'containers/pages/ReposListPage'
 import RepoDetailsPage from 'containers/pages/RepoDetailsPage'
@@ -13,7 +12,6 @@ export default ({ store, history }) => (
   <Router history={ syncHistoryWithStore(history, store) }>
     <Route path="/" component={ AppLayout }>
       <IndexRedirect to="repos" />
-      {/* <IndexRoute component={ IndexPage } /> */}
       <Route path="repos">
         <IndexRoute component={ ReposListPage } />
         <Route path=":owner/:repo">
