@@ -1,3 +1,5 @@
+<img src="../web/public/images/logo.png" height="68" />
+
 # Runner
 
 This is an Elixir daemon that pulls for job our API and executes tests in `runner-container`.

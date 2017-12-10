@@ -1,3 +1,5 @@
+<img src="./web/public/images/logo.png" height="68" />
+
 # ElixirBench
 
 Long Running Benchmarks for Elixir Projects.
@@ -54,4 +56,4 @@ You can find code sample in [Ecto repo](https://github.com/elixir-ecto/ecto/tree
 
 ### Running benchmarks
 
-Benchmarking UI is available on the [official website](https://spawnfest.github.io/elixirbench/#/).
+Benchmarking UI is available on the [official website](http://www.elixirbench.org/).
