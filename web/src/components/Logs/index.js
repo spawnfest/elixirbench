@@ -10,7 +10,14 @@ import styles from './styles'
 const Logs = ({ classes, children, log, multilineLog, onRestartClick }) => (
   <div className={ classes.root }>
     { isEmpty(log) ? (
-      <div className={ classes.empty }>We don't have any logs. Try to wait or <a onClick={onRestartClick}>restart the job</a>.</div>
+      <div className={ classes.empty }>
+        <p>
+          We don't have any logs. Try to wait or <a onClick={onRestartClick}>restart the job</a>.
+        </p>
+        <p>
+          We're re-fetching logs every 5 seconds...
+        </p>
+      </div>
     ) : <div>
       { multilineLog }
     </div> }

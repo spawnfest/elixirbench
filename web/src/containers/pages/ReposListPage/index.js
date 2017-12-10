@@ -9,7 +9,7 @@ import { graphql } from 'react-apollo'
 
 import Page from 'components/Page'
 import ReposList from 'containers/blocks/ReposList'
-import ScheduleJobForm from 'containers/forms/ScheduleJobForm'
+import JobsList from 'containers/blocks/JobsList'
 
 import Typography from 'material-ui/Typography'
 import Grid from 'material-ui/Grid'
@@ -34,10 +34,10 @@ const ReposListPage = ({ classes, data, children, onSubmit }) => (
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 8 }>
           <Typography type="headline" align="left" paragraph>
-            Test your own repo
+            Last jobs
           </Typography>
-          <div className={ classes.form }>
-            <ScheduleJobForm onSubmit={ onSubmit } />
+          <div className={ classes.lastJobs }>
+            <JobsList />
           </div>
         </Grid>
       </Grid>

@@ -2,7 +2,7 @@ import React from 'react'
 import { get } from 'lodash'
 
 import { withRouter } from 'react-router'
-import { compose, pure, withHandlers, withPropsOnChange } from 'recompose'
+import { compose, pure, withHandlers, withPropsOnChange, lifecycle } from 'recompose'
 import { withStyles } from 'material-ui/styles'
 import { getJob } from 'graphql/queries'
 import { scheduleJob } from 'graphql/mutations'
@@ -74,6 +74,15 @@ export default compose(
         router.push(`/job/${data.scheduleJob.id}`)
       })
     }
+  }),
+  lifecycle({
+    componentDidMount(props) {
+      console.log(this.props)
+      this.props.data.startPolling(5 * 1000)
+    },
+    componentWillUnmoun(props) {
+      this.props.data.stopPolling()
+    },
   }),
   withStyles(styles),
 )(BenchmarkDetailsPage);
