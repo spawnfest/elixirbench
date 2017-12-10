@@ -137,9 +137,10 @@ defmodule ElixirBench.Runner.Job do
   defp collect_measurements(benchmars_output_path) do
     "#{benchmars_output_path}/*.json"
     |> Path.wildcard()
-    |> Enum.flat_map(fn path ->
+    |> Enum.reduce(%{}, fn path, acc ->
       benchmark_name = Path.basename(path, ".json")
-      path |> File.read!() |> Antidote.decode!() |> format_measurement(benchmark_name)
+      new_data = path |> File.read!() |> Antidote.decode!() |> format_measurement(benchmark_name)
+      Map.merge(acc, new_data)
     end)
   end
 
