@@ -11,4 +11,7 @@ config :runner, :container_benchmars_output_path, "/var/bench"
 
 config :runner, :job_timeout, {:system, :integer, "JOB_TIMEOUT", 900_000}
 
+config :runner, :api_user, {:system, "RUNNER_API_USER"}
+config :runner, :api_key, {:system, "RUNNER_API_KEY"}
+
 config :logger, level: :info
