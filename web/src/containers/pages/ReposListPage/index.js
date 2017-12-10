@@ -6,7 +6,11 @@ import { graphql } from 'react-apollo'
 
 import Page from 'components/Page'
 import ReposList from 'containers/blocks/ReposList'
+import ScheduleJobForm from 'containers/forms/ScheduleJobForm'
+
 import Typography from 'material-ui/Typography'
+import Paper from 'material-ui/Paper'
+import Grid from 'material-ui/Grid'
 
 import styles from './styles'
 
@@ -19,13 +23,25 @@ const ReposListPage = ({ classes, data, children }) => (
       Long Running Benchmarks for Elixir Projects
     </Typography>
     <div className={ classes.repos }>
-      <div className={ classes.scheduleJob }>
-        <SchedulJobForm onSubmit={ v => console.log(v) } />
-      </div>
-      <Typography type="headline" align="left">
-        Popular repositories
-      </Typography>
-      <ReposList repos={ data.repos } />
+      <Grid container spacing={ 24 }>
+        <Grid item xs={ 12 } sm={ 12 } md={ 4 }>
+          <Typography type="headline" align="left" paragraph>
+            Popular repositories
+          </Typography>
+          <ReposList repos={ data.repos } />
+        </Grid>
+        <Grid item xs={ 12 } sm={ 12 } md={ 8 }>
+          <Typography type="headline" align="left" paragraph>
+            Test your own repo
+          </Typography>
+          <div className={ classes.form }>
+            <ScheduleJobForm onSubmit={ v => console.log(v) } />
+          </div>
+        </Grid>
+      </Grid>
+      <Paper className={ classes.scheduleJob }>
+
+      </Paper>
     </div>
   </Page>
 )
