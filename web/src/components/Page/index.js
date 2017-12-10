@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, pure } from 'recompose'
 import { Link } from 'react-router'
 import { withStyles } from 'material-ui/styles'
+import classnames from 'classnames'
 
 import Typography from 'material-ui/Typography'
 import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft'
@@ -10,9 +11,9 @@ import Grid from 'components/Grid'
 
 import styles from './styles'
 
-const Page = ({ classes, title, backLink, backTitle, children }) => (
+const Page = ({ classes, title, maxWidth, backLink, backTitle, children }) => (
   <div className={ classes.root }>
-    <Grid container direction="column" wrap="nowrap">
+    <Grid container spacing={ 24 } direction="column" wrap="nowrap">
       { backLink && (
         <Grid item>
           <Link to={ backLink }>
@@ -27,15 +28,24 @@ const Page = ({ classes, title, backLink, backTitle, children }) => (
           </Link>
         </Grid>
       )}
-      <Grid item>
-        <Grid container direction="row" wrap="nowrap" alignItems="center">
-          <Grid item>
-            <Typography type="subheading">{ title }</Typography>
+      { title && (
+        <Grid item>
+          <Grid container direction="row" wrap="nowrap" alignItems="center">
+            <Grid item>
+              <Typography type="subheading">{ title }</Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
       <Grid item>
-        { children }
+        <div
+          className={ classnames(
+            classes.root,
+            maxWidth && classes.maxWidth
+          ) }
+        >
+          { children }
+        </div>
       </Grid>
     </Grid>
   </div>

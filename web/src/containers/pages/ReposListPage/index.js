@@ -15,7 +15,7 @@ const ReposListPage = ({ classes, data, children }) => (
     <Typography type="display2" align="center">
       What is ElixirBench?
     </Typography>
-    <Typography align="display1" align="center">
+    <Typography type="headline" align="center">
       Long Running Benchmarks for Elixir Projects
     </Typography>
     <div className={ classes.repos }>

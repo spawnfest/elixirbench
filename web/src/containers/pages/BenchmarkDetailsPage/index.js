@@ -1,7 +1,8 @@
 import React from 'react'
-import { get } from 'lodash'
+import { get, mapValues, round } from 'lodash'
+
 import { withRouter } from 'react-router'
-import { compose, pure } from 'recompose'
+import { compose, pure, withProps } from 'recompose'
 import { withStyles } from 'material-ui/styles'
 import { getBenchmark } from 'queries'
 import { graphql } from 'react-apollo'
@@ -16,20 +17,19 @@ import MeasurementsChart from 'containers/blocks/MeasurementsChart'
 
 import styles from './styles'
 
-const BenchmarkDetailsPage = ({ classes, data, params, children }) => (
+const BenchmarkDetailsPage = ({ classes, data, params, measurements, children }) => (
   <Page
-    title="Benchmark details"
     backLink={`/repos/${params.owner}/${params.repo}`}
     backTitle="Back to the list of benchmarks"
   >
     <Typography type="headline">Measurements for <u>{ get(data, 'benchmark.name') }</u></Typography>
     <PageBlock title="Iteractions per second">
-      <MeasurementsChart measurements={ get(data, 'benchmark.measurements') }>
+      <MeasurementsChart measurements={ measurements }>
         <Line dataKey="ips" type="monotone" title="IPS" />
       </MeasurementsChart>
     </PageBlock>
     <PageBlock title="Statistic">
-      <MeasurementsChart measurements={ get(data, 'benchmark.measurements') }>
+      <MeasurementsChart measurements={ measurements }>
         <Area dataKey="minimum" stackId="range" />
         <Area dataKey="maximum" stackId="range" />
         <Line dataKey="average" />
@@ -50,5 +50,11 @@ export default compose(
       }
     })
   }),
-  withStyles(styles)
+  withStyles(styles),
+  withProps(({ data }) => ({
+    measurements: get(data, 'benchmark.measurements', []).map(i => ({
+      ...i,
+      result: mapValues(i.result, i => round(i, 2)),
+    }))
+  }))
 )(BenchmarkDetailsPage);

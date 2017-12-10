@@ -21,6 +21,7 @@ const RepoDetails = ({ classes, data, githubUrl, children, onBenchmarkClick, onR
   <Page
      backLink={`/repos`}
      backTitle="Back to the list of repos"
+     maxWidth
    >
     <Card>
       <CardHeader

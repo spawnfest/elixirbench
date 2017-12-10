@@ -6,5 +6,8 @@ export default () => ({
   },
   icon: {
     color: 'white',
+  },
+  logo: {
+    color: 'white',
   }
 })
