@@ -43,6 +43,6 @@ defmodule ElixirBench.Runner.JobTest do
     assert is_binary(job.context.worker_available_memory)
     assert is_binary(job.context.worker_cpu_speed)
     assert job.context.worker_num_cores in 1..64
-    assert job.context.worker_os in [:linux, :windows, :macOS]
+    assert job.context.worker_os in [:Linux, :Windows, :macOS]
   end
 end
