@@ -99,3 +99,6 @@ The above branch and commit contain a valid sample benchmark.
 - Automatic running of benchmarks through repository hooks;
 - More benchmark tools which are easier to use and require less manual setup - maybe some generators;
 - Also, it would be awesome to have integration with GitHub PR check's, so that maintainers can keep track how each PR affects library performance. If we would not be able to handle heavy load because of all that jobs - we can white-list most common packages and give it's developers lightweight version or PR checks - to request to run some commit from another fork/branch to compare how it works before merging it;
+- Provide reliable servers. Since we're running benchmarks, cloud server providers are not
+  appropriate because of the noisy neighbour problem. Some dedicated servers would be required
+  for running the benchmarks.
