@@ -20,7 +20,7 @@ const ReposListPage = ({ classes, data, children }) => (
     </Typography>
     <div className={ classes.repos }>
       <Typography type="headline" align="left">
-        Repositories
+        Popular repositories
       </Typography>
       <ReposList repos={ data.repos } />
     </div>

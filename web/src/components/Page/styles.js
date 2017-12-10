@@ -6,5 +6,8 @@ export default () => ({
   maxWidth: {
     maxWidth: 600,
     marginRight: 'auto'
+  },
+  backIcon: {
+    lineHeight: 0,
   }
 })
