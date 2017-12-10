@@ -14,3 +14,9 @@ Benchmarks are running inside a docker container, so you need to have
 
 To build the release you can use `mix release`. The relese requires a `RUNNER_API_KEY` and `RUNNER_API_USER`
 environment variables for communication with the API server.
+
+The server needs to have proper credentials for the runner configured as well. This can be done from
+the release console using:
+```elixir
+ElixirBench.Benchmarks.create_runner(%{api_key: some_key, name: some_name})
+```
