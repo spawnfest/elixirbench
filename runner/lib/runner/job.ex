@@ -36,24 +36,22 @@ defmodule ElixirBench.Runner.Job do
   @doc """
   Executes a benchmarking job for a specific commit.
   """
-  def start_job(id, repo_slug, branch, commit) do
-    with {:ok, config} <- Config.fetch_config_by_repo_slug(repo_slug, commit) do
-      ensure_no_other_jobs!()
+  def start_job(id, repo_slug, branch, commit, config) do
+    ensure_no_other_jobs!()
 
-      job = %Job{id: id, repo_slug: repo_slug, branch: branch, commit: commit, config: config}
+    job = %Job{id: to_string(id), repo_slug: repo_slug, branch: branch, commit: commit, config: config}
 
-      task =
-        Task.Supervisor.async_nolink(ElixirBench.Runner.JobsSupervisor, fn ->
-          run_job(job)
-        end)
+    task =
+      Task.Supervisor.async_nolink(ElixirBench.Runner.JobsSupervisor, fn ->
+        run_job(job)
+      end)
 
-      timeout = Confex.fetch_env!(:runner, :job_timeout)
-      case Task.yield(task, timeout) || Task.shutdown(task) do
-        {:ok, result} -> result
+    timeout = Confex.fetch_env!(:runner, :job_timeout)
+    case Task.yield(task, timeout) || Task.shutdown(task) do
+      {:ok, result} -> result
 
-        nil ->
-          %{job | status: 127, log: "Job execution timed out"}
-      end
+      nil ->
+        %{job | status: 127, log: "Job execution timed out"}
     end
   end
 
@@ -78,7 +76,7 @@ defmodule ElixirBench.Runner.Job do
       %{job | log: log, status: status, measurements: measurements, context: context}
     after
       # Stop all containers and delete all containers, images and build cache
-      # {_log, 0} = System.cmd("docker", ~w[system prune -a -f])
+      {_log, 0} = System.cmd("docker", ~w[system prune -a -f])
 
       # Clean benchmarking temporary files
       File.rm_rf!(benchmars_output_path)
@@ -139,9 +137,10 @@ defmodule ElixirBench.Runner.Job do
   defp collect_measurements(benchmars_output_path) do
     "#{benchmars_output_path}/*.json"
     |> Path.wildcard()
-    |> Enum.flat_map(fn path ->
+    |> Enum.reduce(%{}, fn path, acc ->
       benchmark_name = Path.basename(path, ".json")
-      path |> File.read!() |> Antidote.decode!() |> format_measurement(benchmark_name)
+      new_data = path |> File.read!() |> Antidote.decode!() |> format_measurement(benchmark_name)
+      Map.merge(acc, new_data)
     end)
   end
 
@@ -149,8 +148,10 @@ defmodule ElixirBench.Runner.Job do
     run_times = Map.get(measurement, "run_times")
     statistics = Map.get(measurement, "statistics")
 
-    Enum.reduce(run_times, [], fn {name, runs}, acc ->
-     [{benchmark_name <> "/" <> name, %{runs: runs, statistics: Map.fetch!(statistics, name)}}] ++ acc
+    Map.new(run_times, fn {name, runs} ->
+      data = Map.fetch!(statistics, name)
+      data = Map.put(data, :run_times, runs)
+      {benchmark_name <> "/" <> name, data}
     end)
   end
 
@@ -158,11 +159,11 @@ defmodule ElixirBench.Runner.Job do
     mix_deps = read_mix_deps("#{benchmars_output_path}/mix.lock")
 
     %{
-      mix_deps: mix_deps,
-      worker_num_cores: Benchee.System.num_cores(),
+      dependency_versions: mix_deps,
+      cpu_count: Benchee.System.num_cores(),
       worker_os: Benchee.System.os(),
-      worker_available_memory: Benchee.System.available_memory(),
-      worker_cpu_speed: Benchee.System.cpu_speed()
+      memory: Benchee.System.available_memory(),
+      cpu: Benchee.System.cpu_speed()
     }
   end
 
@@ -171,7 +172,7 @@ defmodule ElixirBench.Runner.Job do
       {:ok, info} ->
         case Code.eval_string(info, [], file: file) do
           {lock, _binding} when is_map(lock) ->
-            Enum.map(lock, fn
+            Map.new(lock, fn
               {dep_name, ast} when elem(ast, 0) == :git ->
                 {dep_name, elem(ast, 1)}
 

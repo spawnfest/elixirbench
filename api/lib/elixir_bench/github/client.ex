@@ -4,24 +4,24 @@ defmodule ElixirBench.Github.Client do
   defstruct [:base_url, ssl_options: []]
 
   def get_plain(%Client{} = client, url, params \\ []) do
-    get(client, url(client, url, params), [{"accept", "text/plain"}], fn data ->
-      data
-    end)
+    get(client, url(client, url, params), [{"accept", "text/plain"}], &(&1))
   end
 
   def get_json(%Client{} = client, url, params \\ []) do
-    get(client, url(client, url, params), [{"accept", "application/json"}], fn data ->
-      Antidote.decode(data)
-    end)
+    get(client, url(client, url, params), [{"accept", "application/json"}], &Antidote.decode/1)
   end
 
   def get_yaml(%Client{} = client, url, params \\ []) do
-    get(client, url(client, url, params), [{"accept", "application/yaml"}], fn data ->
-      case :yamerl.decode(data, [:str_node_as_binary, map_node_format: :map]) do
-        [parsed] -> {:ok, parsed}
-        _ -> {:error, :invalid}
-      end
-    end)
+    get(client, url(client, url, params), [{"accept", "application/yaml"}], &decode_yaml/1)
+  end
+
+  @doc false
+  # Public for testing purposes
+  def decode_yaml(content) do
+    case :yamerl.decode(content, [:str_node_as_binary, map_node_format: :map]) do
+      [parsed] -> {:ok, parsed}
+      _ -> {:error, :invalid}
+    end
   end
 
   defp get(client, url, headers, cb) do

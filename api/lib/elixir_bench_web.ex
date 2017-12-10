@@ -22,7 +22,6 @@ defmodule ElixirBenchWeb do
       use Phoenix.Controller, namespace: ElixirBenchWeb
       import Plug.Conn
       import ElixirBenchWeb.Router.Helpers
-      import ElixirBenchWeb.Gettext
     end
   end
 
@@ -36,7 +35,6 @@ defmodule ElixirBenchWeb do
 
       import ElixirBenchWeb.Router.Helpers
       import ElixirBenchWeb.ErrorHelpers
-      import ElixirBenchWeb.Gettext
     end
   end
 
@@ -51,7 +49,6 @@ defmodule ElixirBenchWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import ElixirBenchWeb.Gettext
     end
   end
 

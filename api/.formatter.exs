@@ -12,5 +12,6 @@
     object: 2,
     field: 2,
     field: 3
-  ]
+  ],
+  line_length: 120
 ]

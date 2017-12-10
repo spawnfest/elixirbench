@@ -11,7 +11,7 @@ defmodule ElixirBenchWeb.Router do
     plug BasicAuth, callback: &__MODULE__.authenticate_runner/3
   end
 
-  scope "/api", ElixirBenchWeb do
+  scope "/runner-api", ElixirBenchWeb do
     pipe_through [:api, :runner_secure]
 
     post "/jobs/claim", JobController, :claim

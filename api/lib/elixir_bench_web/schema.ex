@@ -39,6 +39,12 @@ defmodule ElixirBenchWeb.Schema do
       end
     end
 
+    field :jobs, list_of(:job) do
+      resolve fn _, _ ->
+        {:ok, Benchmarks.list_jobs()}
+      end
+    end
+
     field :job, non_null(:job) do
       arg :id, non_null(:id)
       resolve fn %{id: id}, _ ->
@@ -64,6 +70,7 @@ defmodule ElixirBenchWeb.Schema do
   def context(ctx) do
     loader =
       Dataloader.new
+      |> Dataloader.add_source(Repos, Repos.data())
       |> Dataloader.add_source(Benchmarks, Benchmarks.data())
 
     Map.put(ctx, :loader, loader)

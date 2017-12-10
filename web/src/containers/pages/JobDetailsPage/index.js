@@ -78,7 +78,7 @@ export default compose(
   lifecycle({
     componentDidMount(props) {
       console.log(this.props)
-      this.props.data.startPolling(1000)
+      this.props.data.startPolling(5 * 1000)
     },
     componentWillUnmoun(props) {
       this.props.data.stopPolling()

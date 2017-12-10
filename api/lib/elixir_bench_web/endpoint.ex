@@ -1,8 +1,6 @@
 defmodule ElixirBenchWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :elixir_bench
 
-  socket "/socket", ElixirBenchWeb.UserSocket
-
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
@@ -30,15 +28,7 @@ defmodule ElixirBenchWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_elixir_bench_key",
-    signing_salt: "nHRnIt4M"
-
-  plug Corsica, max_age: 600, origins: "*"
+  plug Corsica, max_age: 600, origins: [~r/localhost:\d+$/, ~r/elixirbench.org$/], allow_headers: ~w(accept content-type origin)
 
   plug ElixirBenchWeb.Router
 

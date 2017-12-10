@@ -30,3 +30,5 @@ docker run --env ELIXIRBENCH_REPO_SLUG=elixir-ecto/ecto \
 # Push it to Docker Hub
 docker push elixirbench/1.5.2-20.1.2
 ```
+
+By default, it will run benchmarks via `mix run bench/bench_helper.exs` on a project source with a `MIX_ENV=bench`.

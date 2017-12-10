@@ -4,6 +4,14 @@ defmodule ElixirBench.Repos do
 
   alias ElixirBench.Repos
 
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _args) do
+    queryable
+  end
+
   def list_repos() do
     Repo.all(Repos.Repo)
   end
@@ -12,6 +20,10 @@ defmodule ElixirBench.Repos do
     parse_slug(slug, fn owner, name ->
       Repo.fetch(where(Repos.Repo, [owner: ^owner, name: ^name]))
     end)
+  end
+
+  def fetch_repo(id) do
+    Repo.fetch(where(Repos.Repo, id: ^id))
   end
 
   def fetch_repo_id_by_slug(slug) do
