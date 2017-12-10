@@ -28,7 +28,7 @@ RUN set -xe; \
     rm -rf /tmp/elixir-build && \
     apk del .elixir-build
 
-# Install dependencies
+# Install runtime dependencies
 RUN apk --no-cache --update add \
         ca-certificates \
         make \
@@ -38,7 +38,7 @@ RUN apk --no-cache --update add \
 ENV PROJECT_PATH=/opt/app \
     BENCHMARKS_OUTPUT_PATH=/var/bench
 
-# Run suite from non-root user
+# Create a non-root user to run the suite
 RUN addgroup -S app && \
     adduser -S -g app app
 
@@ -48,7 +48,7 @@ RUN set -xe; \
     mkdir -p ${BENCHMARKS_OUTPUT_PATH} && \
     chown -R app ${HOME} && \
     chown -R app ${BENCHMARKS_OUTPUT_PATH} && \
-    chmod 700 ${PROJECT_PATH} ${BENCHMARKS_OUTPUT_PATH}
+    chmod 777 ${PROJECT_PATH} ${BENCHMARKS_OUTPUT_PATH}
 
 # Change workdir
 WORKDIR ${PROJECT_PATH}
