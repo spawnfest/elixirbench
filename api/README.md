@@ -1,6 +1,14 @@
 <img src="../web/public/images/logo.png" height="68" />
 
-# ElixirBench
+# ElixirBench API
+
+This project provides a public GraphQL API for exploring the results of the
+benchmarks and is responsible for jobs scheduling.
+
+You can explore it's API doc in public [GraphiQL](https://api.elixirbench.org/api/graphiql)
+interface.
+
+## Getting started
 
 To start your Phoenix server:
 
